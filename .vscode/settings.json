@@ -1,0 +1,15 @@
+{
+  // Files view
+  "files.autoSave": "afterDelay",
+  "files.exclude": {
+    "**/__pycache__": true,
+    "**/.venv": true,
+    "**/.ruff_cache": true,
+    "**/.mypy_cache": true,
+    ".python-version": true,
+    "uv.lock": true,
+  },
+
+  // Editor
+  "editor.rulers": [88],
+}
