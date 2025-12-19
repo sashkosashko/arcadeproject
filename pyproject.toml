@@ -7,3 +7,13 @@ requires-python = ">=3.13"
 dependencies = [
     "arcade>=3.3.3",
 ]
+
+[tool.ruff.lint]
+select = ["ALL"]
+ignore = [
+    # Ошибки связанные с кирилицей
+    "RUF001", "RUF002", "RUF003",
+
+    # TODO
+    "TD003", "FIX002",
+]

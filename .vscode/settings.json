@@ -1,4 +1,12 @@
 {
+  // Linter settings
+  "[python]": {
+    "editor.formatOnPaste": true,
+    "editor.formatOnSave": true,
+    "editor.formatOnType": true,
+    "editor.defaultFormatter": "charliermarsh.ruff"
+  },
+
   // Files view
   "files.autoSave": "afterDelay",
   "files.exclude": {
