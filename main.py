@@ -46,6 +46,8 @@ class GridGame(arcade.Window):
             self.change_x = self.speed
         elif key == arcade.key.LEFT:
             self.change_x = -self.speed
+        if key == arcade.key.ESCAPE:
+            arcade.close_window()
 
     def on_key_release(self, key, modifiers):
         if key in [arcade.key.LEFT, arcade.key.RIGHT]:
