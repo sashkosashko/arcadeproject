@@ -2,9 +2,6 @@
 
 import arcade
 
-TITLE = "Игра"
-WIDTH, HEIGHT = arcade.get_display_size()
-
 
 class GridGame(arcade.Window):
     """Класс игры."""
@@ -36,7 +33,8 @@ class GridGame(arcade.Window):
         self.player_list.append(self.player)
 
         self.physics_engine = arcade.PhysicsEngineSimple(
-            self.player, self.collision_list,
+            self.player,
+            self.collision_list,
         )
 
     def on_draw(self) -> None:
@@ -71,13 +69,3 @@ class GridGame(arcade.Window):
             self.change_x = 0
         elif key in (arcade.key.UP, arcade.key.DOWN):
             self.change_y = 0
-
-
-def main() -> None:
-    """Запуск игры."""
-    GridGame(WIDTH, HEIGHT, TITLE)
-    arcade.run()
-
-
-if __name__ == "__main__":
-    main()
