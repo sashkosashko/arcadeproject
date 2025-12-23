@@ -1,15 +1,27 @@
+"""Основная механика игры."""
+
 import arcade
+
+TITLE = "Игра"
+WIDTH, HEIGHT = arcade.get_display_size()
 
 
 class GridGame(arcade.Window):
-    def __init__(self, width, height, title):
+    """Класс игры."""
+
+    def __init__(self, width: int, height: int, title: str) -> None:
+        """Инициализация класса игры."""
         super().__init__(width, height, title)
         self.player_texture = arcade.load_texture("assets/boy.png")
         self.change_x = 0
         self.change_y = 0
         self.speed = 5
 
-    def setup(self):
+        self.set_fullscreen(True)
+        self.setup()
+
+    def setup(self) -> None:
+        """Запуск игры."""
         self.player_list = arcade.SpriteList()
         map_name = "assets/mainmap.tmx"
         tile_map = arcade.load_tilemap(map_name, scaling=2)
@@ -23,51 +35,49 @@ class GridGame(arcade.Window):
         self.player.position = (x, y)
         self.player_list.append(self.player)
 
-        self.physics_engine = arcade.PhysicsEngineSimple(self.player, self.collision_list)
+        self.physics_engine = arcade.PhysicsEngineSimple(
+            self.player, self.collision_list,
+        )
 
-    def on_draw(self):
+    def on_draw(self) -> None:
+        """Отрисовка игры."""
         self.clear()
         self.floor_list.draw()
         self.wall_list.draw()
         self.player_list.draw()
 
-    def on_update(self, delta_time: float):
-        self.player.change_x = self.change_x
-        self.player.change_y = self.change_y
-
+    def on_update(self, _: float) -> None:
+        """Действия при обновлении ."""
+        self.player.change_x, self.player.change_y = self.change_x, self.change_y
         self.physics_engine.update()
 
-    def on_key_press(self, key, modifiers):
-        if key == arcade.key.UP:
-            self.change_y = self.speed
-        elif key == arcade.key.DOWN:
-            self.change_y = -self.speed
-        elif key == arcade.key.RIGHT:
-            self.change_x = self.speed
-        elif key == arcade.key.LEFT:
-            self.change_x = -self.speed
-        if key == arcade.key.ESCAPE:
-            arcade.close_window()
+    def on_key_press(self, key: int, _: int) -> None:
+        """Обработка нажатия кнопок клавиатуры."""
+        match key:
+            case arcade.key.UP:
+                self.change_y = self.speed
+            case arcade.key.DOWN:
+                self.change_y = -self.speed
+            case arcade.key.RIGHT:
+                self.change_x = self.speed
+            case arcade.key.LEFT:
+                self.change_x = -self.speed
+            case arcade.key.ESCAPE:
+                arcade.close_window()
 
-    def on_key_release(self, key, modifiers):
-        if key in [arcade.key.LEFT, arcade.key.RIGHT]:
+    def on_key_release(self, key: int, _: int) -> None:
+        """Обработка отпускания кнопок клавиатуры."""
+        if key in (arcade.key.LEFT, arcade.key.RIGHT):
             self.change_x = 0
-        if key in [arcade.key.UP, arcade.key.DOWN]:
+        elif key in (arcade.key.UP, arcade.key.DOWN):
             self.change_y = 0
 
-def setup_game(width, height, title):
-    game = GridGame(width, height, title)
-    game.set_fullscreen(True)
-    game.setup()
-    return game
 
-def main():
-    width = arcade.get_display_size()[0]
-    height = arcade.get_display_size()[1]
-    title = "Игра"
-    setup_game(width, height, title)
+def main() -> None:
+    """Запуск игры."""
+    GridGame(WIDTH, HEIGHT, TITLE)
     arcade.run()
+
 
 if __name__ == "__main__":
     main()
-
