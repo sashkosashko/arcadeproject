@@ -1,10 +1,60 @@
 import arcade
 from arcade.gui import UIManager, UIFlatButton, UITextureButton, UILabel, UIInputText, UITextArea, UISlider, UIDropdown, \
-    UIMessageBox
-from arcade.gui.widgets.layout import UIAnchorLayout, UIBoxLayout
+    UIMessageBox  # Это разные виджеты
+from arcade.gui.widgets.layout import UIAnchorLayout, UIBoxLayout  # А это менеджеры компоновки, как в pyQT
 
 
 class FirstGame(arcade.Window):
+    def __init__(self, width, height, title):
+        super().__init__(width, height, title, center_window=True)
+        arcade.set_background_color(arcade.color.GRAY)
+        
+        # UIManager — сердце GUI
+        self.manager = UIManager()
+        self.manager.enable()  # Включить, чтоб виджеты работали
+        
+        # Layout для организации — как полки в шкафу
+        self.anchor_layout = UIAnchorLayout()  # Центрирует виджеты
+        self.box_layout = UIBoxLayout(vertical=True, space_between=10)  # Вертикальный стек
+        
+        # Добавим все виджеты в box, потом box в anchor
+        self.setup_widgets()  # Функция ниже
+        
+        self.anchor_layout.add(self.box_layout)  # Box в anchor
+        self.manager.add(self.anchor_layout)  # Всё в manager
+
+    def setup_widgets(self):
+        start_button = UIFlatButton(text="Начать игру", width=200, height=50, color=arcade.color.BLUE)
+        start_button.on_click = self.startBt
+        self.box_layout.add(start_button)
+
+        settings_button = UIFlatButton(text="Настройки", width=200, height=50, color=arcade.color.BLUE)
+        settings_button.on_click = self.settingsBt
+        self.box_layout.add(settings_button)
+
+        learn_button = UIFlatButton(text="Как играть", width=200, height=50, color=arcade.color.BLUE)
+        learn_button.on_click = self.learnBt
+        self.box_layout.add(learn_button)
+
+    def startBt(self, event):
+        width = arcade.get_display_size()[0]
+        height = arcade.get_display_size()[1]
+        title = "Игра"
+        setup_game(width, height, title)
+        arcade.run()
+
+    def settingsBt(self, event):
+        pass
+
+    def learnBt(self, event):
+        pass
+
+    def on_draw(self):
+        self.clear()
+        self.manager.draw()
+
+
+class MenuGame(arcade.Window):
     def __init__(self, width, height, title):
         super().__init__(width, height, title, center_window=True)
         arcade.set_background_color(arcade.color.GRAY)
@@ -37,12 +87,12 @@ class FirstGame(arcade.Window):
 
     def exitBt(self, event):
         arcade.close_window()
-
+        sg = FirstGame(arcade.get_display_size()[0], arcade.get_display_size()[1], "Игра")
+        
     def on_draw(self):
         self.clear()
         self.manager.draw()
-
-
+        
 class GridGame(arcade.Window):
     def __init__(self, width, height, title):
         super().__init__(width, height, title)
@@ -72,6 +122,7 @@ class GridGame(arcade.Window):
         self.floor_list.draw()
         self.wall_list.draw()
         self.player_list.draw()
+        
 
     def on_update(self, delta_time: float):
         self.player.change_x = self.change_x
@@ -89,7 +140,8 @@ class GridGame(arcade.Window):
         elif key == arcade.key.LEFT:
             self.change_x = -self.speed
         if key == arcade.key.ESCAPE:
-            fg = FirstGame(arcade.get_display_size()[0] // 2, arcade.get_display_size()[1] // 2, "Меню")
+            arcade.close_window()
+            fg = MenuGame(arcade.get_display_size()[0] // 2, arcade.get_display_size()[1] // 2, "Меню")
 
     def on_key_release(self, key, modifiers):
         if key in [arcade.key.LEFT, arcade.key.RIGHT]:
@@ -97,19 +149,24 @@ class GridGame(arcade.Window):
         if key in [arcade.key.UP, arcade.key.DOWN]:
             self.change_y = 0
 
+
 def setup_game(width, height, title):
     game = GridGame(width, height, title)
     game.set_fullscreen(True)
     game.setup()
     return game
 
+def start_game(width, height, title):
+    game = FirstGame(width, height, title)
+    game.set_fullscreen(True)
+    return game
+
 def main():
     width = arcade.get_display_size()[0]
     height = arcade.get_display_size()[1]
     title = "Игра"
-    setup_game(width, height, title)
+    start_game(width, height, title)
     arcade.run()
 
 if __name__ == "__main__":
     main()
-
