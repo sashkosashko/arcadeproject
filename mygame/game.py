@@ -24,9 +24,9 @@ class GridGame(arcade.Window):
     def setup(self) -> None:
         """Запуск игры."""
         self.player_list = arcade.SpriteList()
-        map_name = "assets/mainmap.tmx"
+        map_name = "assets/my_map.tmx"
         self.tile_map = arcade.load_tilemap(map_name, scaling=self.tile_scaling)
-        self.wall_list = self.tile_map.sprite_lists["walls"]
+        self.wall_list = self.tile_map.sprite_lists["collision"]
         self.floor_list = self.tile_map.sprite_lists["floor"]
         self.collision_list = self.tile_map.sprite_lists["collision"]
 
