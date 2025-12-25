@@ -1,7 +1,8 @@
 """Запуск игры."""
 
 import arcade
-from game import GridGame
+
+from .game import GridGame
 
 TITLE = "Игра"
 WIDTH, HEIGHT = arcade.get_display_size()
