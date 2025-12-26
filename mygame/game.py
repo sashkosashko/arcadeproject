@@ -15,7 +15,7 @@ class GridGame(arcade.Window):
         self.speed = 5
         self.world_camera = arcade.camera.Camera2D()
         self.gui_camera = arcade.camera.Camera2D()
-        self.tile_scaling = 2
+        self.tile_scaling = 4
         self.camera_lerp = 0.15
 
         self.set_fullscreen(True)
