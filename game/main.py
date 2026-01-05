@@ -1,7 +1,8 @@
 """Запуск игры."""
 
 import arcade
-from game import GridGame
+
+from .game import StartGame
 
 TITLE = "Игра"
 WIDTH, HEIGHT = arcade.get_display_size()
@@ -9,5 +10,5 @@ WIDTH, HEIGHT = arcade.get_display_size()
 
 def main() -> None:
     """Запуск игры."""
-    GridGame(WIDTH, HEIGHT, TITLE)
+    StartGame(WIDTH, HEIGHT, TITLE)
     arcade.run()
