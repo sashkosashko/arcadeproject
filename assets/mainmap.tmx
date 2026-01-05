@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.10" tiledversion="1.11.2" orientation="orthogonal" renderorder="right-down" width="30" height="20" tilewidth="32" tileheight="32" infinite="0" nextlayerid="4" nextobjectid="1">
+ <tileset firstgid="1" source="tiles.tsx"/>
+ <layer id="1" name="floor" width="30" height="20">
+  <data encoding="base64" compression="zlib">
+   eJzFlV0OgyAQhOHBegbr/Q+oXqA1OunXcdD6VJKNLLAz7B+W8r8xvWXev5ovYT0Jz57hUNfo6ra+fjWfyvdcNi2slh1159XaUDcR/1CPNo+33tdtTkl21K94n/XDP8CGduPOLdE+750wrniFS5yU03E/6/s8I7xfeRO3xzzluHVHfRPvYtxTOcZ+xVWOO9P9jtwT/jrXoB9+19Y9RvCkWEq0J30EL2un1cOK46OBP5Vv/1zkq8c59e9ccg4SfqoPSo8v48w+Y25SjhI+e4l54DnNPc5zyX3+NGzGmH3kPrvuvB5L53Xd8+7vFnnTPROv3h/W0Nl/wMXr22uBvOk9YA2lfvT1lqRaYH4dU7H1d9Z790pSjZE3Yd7xifbJ1xZv6rtffbrr+z/HCzEu3ek=
+  </data>
+ </layer>
+ <layer id="2" name="walls" width="30" height="20">
+  <data encoding="base64" compression="zlib">
+   eJzjZWBg4KUj5kNi0xuM2jtq76i9o/aSChQHyF7TAbJ3pMXvSLRXcQDsBdlpOgD2wvIRvds5/EAMAEroBZk=
+  </data>
+ </layer>
+ <layer id="3" name="collision" width="30" height="20" visible="0">
+  <data encoding="base64" compression="zlib">
+   eJxzY2BgcBsgTG8wau+ovaP2jto7au+ovSPd3qgBsBdkZ94A2Auyk95tG3cg9gBiALk1Grw=
+  </data>
+ </layer>
+</map>
