@@ -2,17 +2,12 @@ import arcade
 from arcade.gui import (
     UIManager,
     UITextureButton,
-    # UIFlatButton,
-    # UILabel,
-    # UIInputText,
-    # UITextArea,
-    # UISlider,
-    # UIDropdown,
-    # UIMessageBox,
 )
 from arcade.gui.widgets.layout import UIAnchorLayout, UIBoxLayout
 
+from game.config import textures
 from game.screens import GridScreen
+
 
 class MenuScreen(arcade.Window):
     """Начальное окно игры."""
@@ -36,33 +31,24 @@ class MenuScreen(arcade.Window):
         self.setup()
 
     def setup_widgets(self):
-        texture_normal = arcade.load_texture("assets/startnorm.png")
-        texture_hovered = arcade.load_texture("assets/startpush.png")
-        texture_pressed = arcade.load_texture("assets/click.png")
         texture_button = UITextureButton(
-            texture=texture_normal,
-            texture_hovered=texture_hovered,
-            texture_pressed=texture_pressed,
+            texture=textures.STARTNORM,
+            texture_hovered=textures.STARTPUSH,
+            texture_pressed=textures.CLICK,
             scale=4.0,
         )
         texture_button.on_click = self.play
-        texture_normal1 = arcade.load_texture("assets/settingsnorm.png")
-        texture_hovered1 = arcade.load_texture("assets/settingpush.png")
-        texture_pressed1 = arcade.load_texture("assets/click.png")
         texture_button1 = UITextureButton(
-            texture=texture_normal1,
-            texture_hovered=texture_hovered1,
-            texture_pressed=texture_pressed1,
+            texture=textures.SETTINGSNORM,
+            texture_hovered=textures.SETTINGPUSH,
+            texture_pressed=textures.CLICK,
             scale=4.0,
         )
         # texture_button1.on_click =
-        texture_normal2 = arcade.load_texture("assets/howplaynorm.png")
-        texture_hovered2 = arcade.load_texture("assets/howplaypush.png")
-        texture_pressed2 = arcade.load_texture("assets/click.png")
         texture_button2 = UITextureButton(
-            texture=texture_normal2,
-            texture_hovered=texture_hovered2,
-            texture_pressed=texture_pressed2,
+            texture=textures.HOWPLAYNORM,
+            texture_hovered=textures.HOWPLAYPUSH,
+            texture_pressed=textures.CLICK,
             scale=4.0,
         )
         # texture_button2.on_click =
