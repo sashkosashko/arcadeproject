@@ -5,7 +5,16 @@ from arcade.gui import (
 )
 from arcade.gui.widgets.layout import UIAnchorLayout, UIBoxLayout
 
-from game.config import textures
+from game.config import textures, sounds
+
+# Масштаб игры
+TILE_SCALING = 4
+
+# Скорость игрока
+SPEED = 5
+
+# Что-то на умном
+CAMERA_LERP = 0.15
 
 
 class GridScreen(arcade.Window):
@@ -15,29 +24,30 @@ class GridScreen(arcade.Window):
         """Инициализация класса игры."""
         super().__init__(width, height, title)
         self.player_texture = textures.MOVES_SPRITES_IDLE_PLAYER
-        self.change_x = 0
-        self.change_y = 0
-        self.speed = 5
+
         self.world_camera = arcade.camera.Camera2D()
         self.gui_camera = arcade.camera.Camera2D()
-        self.tile_scaling = 4
-        self.camera_lerp = 0.15
+
+        self.change_x = self.change_y = 0
+        self.speed, self.tile_scaling, self.camera_lerp = (
+            SPEED,
+            TILE_SCALING,
+            CAMERA_LERP,
+        )
+
+        self.box_layout = UIBoxLayout(vertical=True, space_between=10)
+
+        self.anchor_layout = UIAnchorLayout()
+        self.anchor_layout.add(self.box_layout)
 
         self.manager = UIManager()
         self.manager.enable()
-        self.tile_scaling = 2
-        self.title = title
-
-        self.anchor_layout = UIAnchorLayout()
-        self.box_layout = UIBoxLayout(vertical=True, space_between=10)
-
-        self.anchor_layout.add(self.box_layout)
         self.manager.add(self.anchor_layout)
 
         self.set_fullscreen(True)
         self.setup()
 
-    def setup_widgets(self) -> None:
+    def setup_menu_widgets(self) -> None:
         """Установка виджетов меню."""
         for texture, texture_hovered, on_click in (
             (textures.STARTNORM, textures.STARTPUSH, self.play),
@@ -55,6 +65,8 @@ class GridScreen(arcade.Window):
 
     def setup(self) -> None:
         """Запуск игры."""
+        sounds.BEGINNING.play()
+
         self.player_list = arcade.SpriteList()
         self.tile_map = arcade.load_tilemap(
             "assets/my_map.tmx",
@@ -172,25 +184,24 @@ class GridScreen(arcade.Window):
 
     def on_key_press(self, key: int, _: int) -> None:
         """Обработка нажатия кнопок клавиатуры."""
+        self.is_walking = True
+
         match key:
             case arcade.key.W:
                 self.change_y = self.speed
-                self.is_walking = True
                 self.keys_pressed.append(key)
             case arcade.key.S:
                 self.change_y = -self.speed
-                self.is_walking = True
                 self.keys_pressed.append(key)
             case arcade.key.D:
                 self.change_x = self.speed
-                self.is_walking = True
                 self.keys_pressed.append(key)
             case arcade.key.A:
                 self.change_x = -self.speed
-                self.is_walking = True
                 self.keys_pressed.append(key)
-        if key == arcade.key.ESCAPE:
-            self.setup_widgets()
+                self.is_walking = False
+            case arcade.key.ESCAPE:
+                self.setup_menu_widgets()
 
     def on_key_release(self, key: int, _: int) -> None:
         """Обработка отпускания кнопок клавиатуры."""

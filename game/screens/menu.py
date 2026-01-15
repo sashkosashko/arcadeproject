@@ -22,7 +22,7 @@ class MenuScreen(arcade.Window):
         self.anchor_layout = UIAnchorLayout()
         self.box_layout = UIBoxLayout(vertical=True, space_between=10)
 
-        self.setup_widgets()
+        self.setup_menu_widgets()
 
         self.anchor_layout.add(self.box_layout)
         self.manager.add(self.anchor_layout)
@@ -30,7 +30,7 @@ class MenuScreen(arcade.Window):
         self.set_fullscreen(True)
         self.setup()
 
-    def setup_widgets(self) -> None:
+    def setup_menu_widgets(self) -> None:
         """Установка виджетов меню."""
         for texture, texture_hovered, on_click in (
             (textures.STARTNORM, textures.STARTPUSH, self.play),
