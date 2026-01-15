@@ -38,36 +38,28 @@ class GridScreen(arcade.Window):
         self.setup()
 
     def setup_widgets(self) -> None:
-        texture_button = UITextureButton(
-            texture=textures.CONTNORM,
-            texture_hovered=textures.STARTPUSH,
-            texture_pressed=textures.CLICK,
-            scale=4.0,
-        )
-        texture_button.on_click = self.play
-        texture_button1 = UITextureButton(
-            texture=textures.SETTINGSNORM,
-            texture_hovered=textures.SETTINGPUSH,
-            texture_pressed=textures.CLICK,
-            scale=4.0,
-        )
-        # texture_button1.on_click =
-        texture_button2 = UITextureButton(
-            texture=textures.EXITNORM,
-            texture_hovered=textures.EXITPUSH,
-            texture_pressed=textures.CLICK,
-            scale=4.0,
-        )
-        texture_button2.on_click = self.exit
-        self.box_layout.add(texture_button)
-        self.box_layout.add(texture_button1)
-        self.box_layout.add(texture_button2)
+        """Установка виджетов меню."""
+        for texture, texture_hovered, on_click in (
+            (textures.STARTNORM, textures.STARTPUSH, self.play),
+            (textures.SETTINGSNORM, textures.SETTINGPUSH, None),
+            (textures.HOWPLAYNORM, textures.HOWPLAYPUSH, None),
+        ):
+            texture_button = UITextureButton(
+                texture=texture,
+                texture_hovered=texture_hovered,
+                texture_pressed=textures.CLICK,
+                scale=4.0,
+            )
+            texture_button.on_click = on_click
+            self.box_layout.add(texture_button)
 
     def setup(self) -> None:
         """Запуск игры."""
         self.player_list = arcade.SpriteList()
-        map_name = "assets/my_map.tmx"
-        self.tile_map = arcade.load_tilemap(map_name, scaling=self.tile_scaling)
+        self.tile_map = arcade.load_tilemap(
+            "assets/my_map.tmx",
+            scaling=self.tile_scaling,
+        )
         self.floor_list = self.tile_map.sprite_lists["floor"]
         self.collision_list = self.tile_map.sprite_lists["collision"]
 
@@ -99,7 +91,7 @@ class GridScreen(arcade.Window):
         )
 
     def update_animation(self, delta_time: float = 1 / 60):
-        """Обновление анимации"""
+        """Обновление анимации."""
         if self.is_walking:
             self.texture_change_time += delta_time
             if self.texture_change_time >= self.texture_change_delay:
@@ -144,27 +136,27 @@ class GridScreen(arcade.Window):
         self.player.change_x, self.player.change_y = self.change_x, self.change_y
         self.update_animation()
 
-        DEAD_ZONE_W = int(self.width * 0.1)
-        DEAD_ZONE_H = int(self.height * 0.1)
+        dead_zone_w = int(self.width * 0.1)
+        dead_zone_h = int(self.height * 0.1)
         cam_x, cam_y = self.world_camera.position
-        dz_left = cam_x - DEAD_ZONE_W // 2
-        dz_right = cam_x + DEAD_ZONE_W // 2
-        dz_bottom = cam_y - DEAD_ZONE_H // 2
-        dz_top = cam_y + DEAD_ZONE_H // 2
+        dz_left = cam_x - dead_zone_w // 2
+        dz_right = cam_x + dead_zone_w // 2
+        dz_bottom = cam_y - dead_zone_h // 2
+        dz_top = cam_y + dead_zone_h // 2
 
         px, py = self.player.center_x, self.player.center_y
         target_x, target_y = cam_x, cam_y
 
         if px < dz_left:
-            target_x = px + DEAD_ZONE_W // 2
+            target_x = px + dead_zone_w // 2
         elif px > dz_right:
-            target_x = px - DEAD_ZONE_W // 2
+            target_x = px - dead_zone_w // 2
         if py < dz_bottom:
-            target_y = py + DEAD_ZONE_H // 2
+            target_y = py + dead_zone_h // 2
         elif py > dz_top:
-            target_y = py - DEAD_ZONE_H // 2
+            target_y = py - dead_zone_h // 2
 
-        # Не показываем «пустоту» за краями карты
+        # Не показываем "пустоту" за краями карты
         half_w = self.world_camera.viewport_width / 2
         half_h = self.world_camera.viewport_height / 2
         target_x = max(half_w, min(self.world_width - half_w, target_x))

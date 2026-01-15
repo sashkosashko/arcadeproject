@@ -30,35 +30,27 @@ class MenuScreen(arcade.Window):
         self.set_fullscreen(True)
         self.setup()
 
-    def setup_widgets(self):
-        texture_button = UITextureButton(
-            texture=textures.STARTNORM,
-            texture_hovered=textures.STARTPUSH,
-            texture_pressed=textures.CLICK,
-            scale=4.0,
-        )
-        texture_button.on_click = self.play
-        texture_button1 = UITextureButton(
-            texture=textures.SETTINGSNORM,
-            texture_hovered=textures.SETTINGPUSH,
-            texture_pressed=textures.CLICK,
-            scale=4.0,
-        )
-        # texture_button1.on_click =
-        texture_button2 = UITextureButton(
-            texture=textures.HOWPLAYNORM,
-            texture_hovered=textures.HOWPLAYPUSH,
-            texture_pressed=textures.CLICK,
-            scale=4.0,
-        )
-        # texture_button2.on_click =
-        self.box_layout.add(texture_button)
-        self.box_layout.add(texture_button1)
-        self.box_layout.add(texture_button2)
+    def setup_widgets(self) -> None:
+        """Установка виджетов меню."""
+        for texture, texture_hovered, on_click in (
+            (textures.STARTNORM, textures.STARTPUSH, self.play),
+            (textures.SETTINGSNORM, textures.SETTINGPUSH, None),
+            (textures.HOWPLAYNORM, textures.HOWPLAYPUSH, None),
+        ):
+            texture_button = UITextureButton(
+                texture=texture,
+                texture_hovered=texture_hovered,
+                texture_pressed=textures.CLICK,
+                scale=4.0,
+            )
+            texture_button.on_click = on_click
+            self.box_layout.add(texture_button)
 
     def setup(self) -> None:
-        map_name = "assets/start_map.tmx"
-        self.tile_map = arcade.load_tilemap(map_name, scaling=self.tile_scaling)
+        self.tile_map = arcade.load_tilemap(
+            "assets/start_map.tmx",
+            scaling=self.tile_scaling,
+        )
         self.floor_list = self.tile_map.sprite_lists["start"]
 
         self.world_width = int(

@@ -16,7 +16,8 @@ WALK_TEXTURES = [
     [
         load_texture(
             f"assets/moves_sprites/{name.lower()}moves/move{name}{n}.png",
-        ) for n in range(1, 5)
+        )
+        for n in range(1, 5)
     ]
     for name in (
         "DOWN",
