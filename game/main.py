@@ -2,7 +2,7 @@
 
 import arcade
 
-from .game import StartGame
+from game.screens import MenuScreen
 
 TITLE = "Игра"
 WIDTH, HEIGHT = arcade.get_display_size()
@@ -10,5 +10,5 @@ WIDTH, HEIGHT = arcade.get_display_size()
 
 def main() -> None:
     """Запуск игры."""
-    StartGame(WIDTH, HEIGHT, TITLE)
+    MenuScreen(WIDTH, HEIGHT, TITLE)
     arcade.run()
