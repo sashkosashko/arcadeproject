@@ -1,5 +1,3 @@
-"""Основная механика игры."""
-
 import arcade
 from arcade.gui import (
     UIManager,
@@ -32,8 +30,54 @@ class GridGame(arcade.Window):
         self.tile_scaling = 4
         self.camera_lerp = 0.15
 
+        self.manager = UIManager()
+        self.manager.enable()
+        self.tile_scaling = 2
+        self.title = title
+
+        self.anchor_layout = UIAnchorLayout()
+        self.box_layout = UIBoxLayout(vertical=True, space_between=10)
+
+        self.anchor_layout.add(self.box_layout)
+        self.manager.add(self.anchor_layout)
+
         self.set_fullscreen(True)
         self.setup()
+
+    def setup_widgets(self) -> None:
+        texture_normal = arcade.load_texture("assets/contnorm.png")
+        texture_hovered = arcade.load_texture("assets/startpush.png")
+        texture_pressed = arcade.load_texture("assets/click.png")
+        texture_button = UITextureButton(
+            texture=texture_normal,
+            texture_hovered=texture_hovered,
+            texture_pressed=texture_pressed,
+            scale=4.0,
+        )
+        texture_button.on_click = self.play
+        texture_normal1 = arcade.load_texture("assets/settingsnorm.png")
+        texture_hovered1 = arcade.load_texture("assets/settingpush.png")
+        texture_pressed1 = arcade.load_texture("assets/click.png")
+        texture_button1 = UITextureButton(
+            texture=texture_normal1,
+            texture_hovered=texture_hovered1,
+            texture_pressed=texture_pressed1,
+            scale=4.0,
+        )
+        # texture_button1.on_click =
+        texture_normal2 = arcade.load_texture("assets/exitnorm.png")
+        texture_hovered2 = arcade.load_texture("assets/exitpush.png")
+        texture_pressed2 = arcade.load_texture("assets/click.png")
+        texture_button2 = UITextureButton(
+            texture=texture_normal2,
+            texture_hovered=texture_hovered2,
+            texture_pressed=texture_pressed2,
+            scale=4.0,
+        )
+        texture_button2.on_click = self.exit
+        self.box_layout.add(texture_button)
+        self.box_layout.add(texture_button1)
+        self.box_layout.add(texture_button2)
 
     def setup(self) -> None:
         """Запуск игры."""
@@ -109,8 +153,16 @@ class GridGame(arcade.Window):
         self.world_camera.use()
         self.floor_list.draw()
         self.player_list.draw()
+        self.manager.draw()
 
         self.gui_camera.use()
+
+    def play(self, event) -> None:
+        self.manager.clear()
+        self.flag = True
+
+    def exit(self, event) -> None:
+        arcade.close_window()
 
     def on_update(self, _: float) -> None:
         """Действия при обновлении ."""
@@ -171,8 +223,7 @@ class GridGame(arcade.Window):
                 self.is_walking = True
                 self.keys_pressed.append(key)
         if key == arcade.key.ESCAPE:
-            arcade.close_window()
-            MenuGame(self.width, self.height, "Меню")
+            self.setup_widgets()
 
     def on_key_release(self, key: int, _: int) -> None:
         """Обработка отпускания кнопок клавиатуры."""
@@ -263,88 +314,4 @@ class StartGame(arcade.Window):
     def play(self, _: arcade.gui.events.UIOnClickEvent) -> None:
         arcade.close_window()
         GridGame(self.width, self.height, self.title)
-        arcade.run()
-
-
-class MenuGame(arcade.Window):
-    """Начальное окно игры"""
-
-    def __init__(self, width: int, height: int, title: str) -> None:
-        super().__init__(width, height, title)
-        self.manager = UIManager()
-        self.manager.enable()
-        self.tile_scaling = 2
-        self.title = title
-
-        self.anchor_layout = UIAnchorLayout()
-        self.box_layout = UIBoxLayout(vertical=True, space_between=10)
-
-        self.setup_widgets()
-
-        self.anchor_layout.add(self.box_layout)
-        self.manager.add(self.anchor_layout)
-
-        self.set_fullscreen(True)
-        self.setup()
-
-    def setup_widgets(self):
-        texture_normal = arcade.load_texture("assets/contnorm.png")
-        texture_hovered = arcade.load_texture("assets/startpush.png")
-        texture_pressed = arcade.load_texture("assets/click.png")
-        texture_button = UITextureButton(
-            texture=texture_normal,
-            texture_hovered=texture_hovered,
-            texture_pressed=texture_pressed,
-            scale=4.0,
-        )
-        texture_button.on_click = self.play
-        texture_normal1 = arcade.load_texture("assets/settingsnorm.png")
-        texture_hovered1 = arcade.load_texture("assets/settingpush.png")
-        texture_pressed1 = arcade.load_texture("assets/click.png")
-        texture_button1 = UITextureButton(
-            texture=texture_normal1,
-            texture_hovered=texture_hovered1,
-            texture_pressed=texture_pressed1,
-            scale=4.0,
-        )
-        # texture_button1.on_click =
-        texture_normal2 = arcade.load_texture("assets/exitnorm.png")
-        texture_hovered2 = arcade.load_texture("assets/exitpush.png")
-        texture_pressed2 = arcade.load_texture("assets/click.png")
-        texture_button2 = UITextureButton(
-            texture=texture_normal2,
-            texture_hovered=texture_hovered2,
-            texture_pressed=texture_pressed2,
-            scale=4.0,
-        )
-        texture_button2.on_click = self.exit
-        self.box_layout.add(texture_button)
-        self.box_layout.add(texture_button1)
-        self.box_layout.add(texture_button2)
-
-    def setup(self) -> None:
-        map_name = "assets/start_map.tmx"
-        self.tile_map = arcade.load_tilemap(map_name, scaling=self.tile_scaling)
-        self.floor_list = self.tile_map.sprite_lists["start"]
-
-        self.world_width = int(
-            self.tile_map.width * self.tile_map.tile_width * self.tile_scaling,
-        )
-        self.world_height = int(
-            self.tile_map.height * self.tile_map.tile_height * self.tile_scaling,
-        )
-
-    def on_draw(self) -> None:
-        self.clear()
-        self.floor_list.draw()
-        self.manager.draw()
-
-    def play(self, event) -> None:
-        arcade.close_window()
-        GridGame(self.width, self.height, self.title)
-        arcade.run()
-
-    def exit(self, event) -> None:
-        arcade.close_window()
-        StartGame(self.width, self.height, self.title)
         arcade.run()
