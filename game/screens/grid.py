@@ -43,6 +43,7 @@ class GridScreen(arcade.Window):
             CAMERA_LERP,
         )
         self.is_menu_widgets_open = False
+        self.is_can_go = True
 
         self.box_layout = UIBoxLayout(vertical=True, space_between=10)
 
@@ -58,6 +59,7 @@ class GridScreen(arcade.Window):
 
     def setup_menu_widgets(self) -> None:
         """Установка виджетов меню."""
+        self.is_can_go = False
         if not self.is_menu_widgets_open:
             self.is_menu_widgets_open = True
             for texture, texture_hovered, on_click in (
@@ -145,7 +147,7 @@ class GridScreen(arcade.Window):
 
     def play(self, event) -> None:
         self.manager.clear()
-        self.flag = True
+        self.is_can_go = True
 
     def exit(self, event) -> None:
         arcade.close_window()
@@ -197,15 +199,22 @@ class GridScreen(arcade.Window):
 
         match key:
             case arcade.key.S:
-                self.change_y = -self.speed
+                if self.is_can_go:
+                    self.change_y = -self.speed
             case arcade.key.A:
-                self.change_x = -self.speed
+                if self.is_can_go:
+                    self.change_x = -self.speed
             case arcade.key.W:
-                self.change_y = self.speed
+                if self.is_can_go:
+                    self.change_y = self.speed
             case arcade.key.D:
-                self.change_x = self.speed
+                if self.is_can_go:
+                    self.change_x = self.speed
             case arcade.key.ESCAPE:
-                self.setup_menu_widgets()
+                if self.is_can_go:
+                    self.setup_menu_widgets()
+                else:
+                    self.play()
 
     def on_key_release(self, key: int, _: int) -> None:
         """Обработка отпускания кнопок клавиатуры."""
