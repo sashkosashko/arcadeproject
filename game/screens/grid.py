@@ -5,6 +5,7 @@ from arcade.gui import (
 )
 from arcade.gui.widgets.layout import UIAnchorLayout, UIBoxLayout
 
+from game.components.dialog import Dialog
 from game.config import sounds, textures
 
 # Масштаб игры
@@ -78,8 +79,6 @@ class GridScreen(arcade.Window):
 
     def setup(self) -> None:
         """Запуск игры."""
-        sounds.BEGINNING.play()
-
         self.player_list: arcade.SpriteList = arcade.SpriteList()
         self.tile_map = arcade.load_tilemap(
             "assets/my_map.tmx",
@@ -115,6 +114,13 @@ class GridScreen(arcade.Window):
             self.collision_list,
         )
 
+        self.dialog: Dialog | None = Dialog(
+            "???",
+            "Ахх.. Где я?. Голова раскалывается.. Как я тут оказалась?.",
+            sounds.BEGINNING,
+            textures.GIRL,
+        )
+
     def update_animation(self, delta_time: float = 1 / 60) -> None:
         """Обновление анимации."""
         if self.is_walking:
@@ -142,6 +148,9 @@ class GridScreen(arcade.Window):
         self.floor_list.draw()
         self.player_list.draw()
         self.manager.draw()
+
+        if self.dialog is not None:
+            self.dialog.draw()
 
         self.gui_camera.use()
 
@@ -194,27 +203,32 @@ class GridScreen(arcade.Window):
         """Обработка нажатия кнопок клавиатуры."""
         self.keys_pressed.append(key)
 
+        if key == arcade.key.ESCAPE:
+            if self.is_can_go:
+                self.setup_menu_widgets()
+            else:
+                # TODO(@iamlostshe): В play нужно что-то передавать
+                self.play()
+                return
+        elif key == arcade.key.ENTER:
+            self.dialog = None
+            return
+
+        if not self.is_can_go:
+            return
+
         if key in KEYS:
             self.is_walking = True
 
         match key:
             case arcade.key.S:
-                if self.is_can_go:
-                    self.change_y = -self.speed
+                self.change_y = -self.speed
             case arcade.key.A:
-                if self.is_can_go:
-                    self.change_x = -self.speed
+                self.change_x = -self.speed
             case arcade.key.W:
-                if self.is_can_go:
-                    self.change_y = self.speed
+                self.change_y = self.speed
             case arcade.key.D:
-                if self.is_can_go:
-                    self.change_x = self.speed
-            case arcade.key.ESCAPE:
-                if self.is_can_go:
-                    self.setup_menu_widgets()
-                else:
-                    self.play()
+                self.change_x = self.speed
 
     def on_key_release(self, key: int, _: int) -> None:
         """Обработка отпускания кнопок клавиатуры."""
