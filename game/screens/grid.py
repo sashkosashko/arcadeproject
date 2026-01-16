@@ -5,16 +5,24 @@ from arcade.gui import (
 )
 from arcade.gui.widgets.layout import UIAnchorLayout, UIBoxLayout
 
-from game.config import textures, sounds
+from game.config import sounds, textures
 
 # Масштаб игры
-TILE_SCALING = 4
+TILE_SCALING = 3
 
 # Скорость игрока
-SPEED = 5
+SPEED = 10
 
 # Что-то на умном
 CAMERA_LERP = 0.15
+
+# Клавиши управления
+KEYS = (
+    arcade.key.S,
+    arcade.key.A,
+    arcade.key.W,
+    arcade.key.D,
+)
 
 
 class GridScreen(arcade.Window):
@@ -34,6 +42,7 @@ class GridScreen(arcade.Window):
             TILE_SCALING,
             CAMERA_LERP,
         )
+        self.is_menu_widgets_open = False
 
         self.box_layout = UIBoxLayout(vertical=True, space_between=10)
 
@@ -49,25 +58,27 @@ class GridScreen(arcade.Window):
 
     def setup_menu_widgets(self) -> None:
         """Установка виджетов меню."""
-        for texture, texture_hovered, on_click in (
-            (textures.STARTNORM, textures.STARTPUSH, self.play),
-            (textures.SETTINGSNORM, textures.SETTINGPUSH, None),
-            (textures.HOWPLAYNORM, textures.HOWPLAYPUSH, None),
-        ):
-            texture_button = UITextureButton(
-                texture=texture,
-                texture_hovered=texture_hovered,
-                texture_pressed=textures.CLICK,
-                scale=4.0,
-            )
-            texture_button.on_click = on_click
-            self.box_layout.add(texture_button)
+        if not self.is_menu_widgets_open:
+            self.is_menu_widgets_open = True
+            for texture, texture_hovered, on_click in (
+                (textures.STARTNORM, textures.STARTPUSH, self.play),
+                (textures.SETTINGSNORM, textures.SETTINGPUSH, None),
+                (textures.HOWPLAYNORM, textures.HOWPLAYPUSH, None),
+            ):
+                texture_button = UITextureButton(
+                    texture=texture,
+                    texture_hovered=texture_hovered,
+                    texture_pressed=textures.CLICK,
+                    scale=4.0,
+                )
+                texture_button.on_click = on_click
+                self.box_layout.add(texture_button)
 
     def setup(self) -> None:
         """Запуск игры."""
         sounds.BEGINNING.play()
 
-        self.player_list = arcade.SpriteList()
+        self.player_list: arcade.SpriteList = arcade.SpriteList()
         self.tile_map = arcade.load_tilemap(
             "assets/my_map.tmx",
             scaling=self.tile_scaling,
@@ -91,18 +102,18 @@ class GridScreen(arcade.Window):
         # Загрузка текстур анимаций персонажа
         self.walk_textures = textures.WALK_TEXTURES
 
-        self.texture_change_time = 0
-        self.texture_change_delay = 0.1  # секунд на кадр
+        self.texture_change_time = .0
+        self.texture_change_delay = .1  # секунд на кадр
         self.is_walking = False
         self.current_texture = 0
-        self.keys_pressed = []
+        self.keys_pressed: list[int] = []
 
         self.physics_engine = arcade.PhysicsEngineSimple(
             self.player,
             self.collision_list,
         )
 
-    def update_animation(self, delta_time: float = 1 / 60):
+    def update_animation(self, delta_time: float = 1 / 60) -> None:
         """Обновление анимации."""
         if self.is_walking:
             self.texture_change_time += delta_time
@@ -111,15 +122,11 @@ class GridScreen(arcade.Window):
                 self.current_texture += 1
                 if self.current_texture > len(self.walk_textures[0]):
                     self.current_texture = 1
-                if self.keys_pressed[-1] == arcade.key.S:
-                    n = 1
-                elif self.keys_pressed[-1] == arcade.key.A:
-                    n = 2
-                elif self.keys_pressed[-1] == arcade.key.W:
-                    n = 3
-                elif self.keys_pressed[-1] == arcade.key.D:
-                    n = 4
-                self.player.texture = self.walk_textures[n - 1][
+                if not self.keys_pressed or self.keys_pressed not in KEYS:
+                    return
+
+                n = KEYS.index(self.keys_pressed[-1])
+                self.player.texture = self.walk_textures[n][
                     self.current_texture - 1
                 ]
         else:
@@ -177,40 +184,40 @@ class GridScreen(arcade.Window):
         # Плавно к цели, аналог arcade.math.lerp_2d, но руками
         smooth_x = (1 - self.camera_lerp) * cam_x + self.camera_lerp * target_x
         smooth_y = (1 - self.camera_lerp) * cam_y + self.camera_lerp * target_y
-        self.cam_target = (smooth_x, smooth_y)
 
-        self.world_camera.position = (self.cam_target[0], self.cam_target[1])
+        self.world_camera.position = (smooth_x, smooth_y)
         self.physics_engine.update()
 
     def on_key_press(self, key: int, _: int) -> None:
         """Обработка нажатия кнопок клавиатуры."""
-        self.is_walking = True
+        self.keys_pressed.append(key)
+
+        if key in KEYS:
+            self.is_walking = True
 
         match key:
-            case arcade.key.W:
-                self.change_y = self.speed
-                self.keys_pressed.append(key)
             case arcade.key.S:
                 self.change_y = -self.speed
-                self.keys_pressed.append(key)
-            case arcade.key.D:
-                self.change_x = self.speed
-                self.keys_pressed.append(key)
             case arcade.key.A:
                 self.change_x = -self.speed
-                self.keys_pressed.append(key)
-                self.is_walking = False
+            case arcade.key.W:
+                self.change_y = self.speed
+            case arcade.key.D:
+                self.change_x = self.speed
             case arcade.key.ESCAPE:
                 self.setup_menu_widgets()
 
     def on_key_release(self, key: int, _: int) -> None:
         """Обработка отпускания кнопок клавиатуры."""
+        if key in self.keys_pressed:
+            self.keys_pressed.remove(key)
+
         if key in (arcade.key.A, arcade.key.D):
             self.change_x = 0
-            self.keys_pressed.remove(key)
+
         elif key in (arcade.key.W, arcade.key.S):
             self.change_y = 0
-            self.keys_pressed.remove(key)
+
         if not self.change_x and not self.change_y:
             self.is_walking = False
             self.keys_pressed = []
