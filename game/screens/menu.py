@@ -51,8 +51,8 @@ class MenuScreen(arcade.Window):
     def setup_menu_widgets_levels(self) -> None:
         for texture, texture_hovered, on_click in (
             (textures.ONENORM, textures.ONENORM, self.startplay),
-            (textures.TWONORM, textures.TWONORM, None),
-            (textures.THREENORM, textures.THREENORM, None),
+            (textures.TWONORM, textures.TWONORM, self.startplay),
+            (textures.THREENORM, textures.THREENORM, self.startplay),
         ):
             texture_button = UITextureButton(
                 texture=texture,
