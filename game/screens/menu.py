@@ -5,8 +5,8 @@ from arcade.gui import (
 )
 from arcade.gui.widgets.layout import UIAnchorLayout, UIBoxLayout
 
-from config import textures
-#from game.screens import GridScreen
+from game.config import textures
+from game.screens import GridScreen
 
 
 class MenuScreen(arcade.Window):
@@ -21,12 +21,10 @@ class MenuScreen(arcade.Window):
 
         self.anchor_layout = UIAnchorLayout()
         self.box_layout = UIBoxLayout(vertical=True, space_between=10)
-        self.box_layout2 = UIBoxLayout(vertical=False, space_between=10)
 
         self.setup_menu_widgets()
 
         self.anchor_layout.add(self.box_layout)
-        self.anchor_layout.add(self.box_layout2)
         self.manager.add(self.anchor_layout)
 
         self.set_fullscreen(True)
@@ -43,6 +41,21 @@ class MenuScreen(arcade.Window):
                 texture=texture,
                 texture_hovered=texture_hovered,
                 texture_pressed=textures.CLICK,
+                scale=4.0,
+            )
+            texture_button.on_click = on_click
+            self.box_layout.add(texture_button)
+
+    def setup_menu_widgets_levels(self) -> None:
+        for texture, texture_hovered, on_click in (
+            (textures.ONENORM, textures.ONENORM, self.startplay),
+            (textures.TWONORM, textures.TWONORM, None),
+            (textures.THREENORM, textures.THREENORM, None),
+        ):
+            texture_button = UITextureButton(
+                texture=texture,
+                texture_hovered=texture_hovered,
+                texture_pressed=textures.CLICK_LEVELS,
                 scale=4.0,
             )
             texture_button.on_click = on_click
@@ -68,6 +81,10 @@ class MenuScreen(arcade.Window):
         self.manager.draw()
 
     def play(self, _: arcade.gui.events.UIOnClickEvent) -> None:
+        self.manager.clear()
+        setup_menu_widgets_levels()
+        
+    def startplay(self, _: arcade.gui.events.UIOnClickEvent) -> None:
         arcade.close_window()
         GridScreen(self.width, self.height, self.title)
         arcade.run()
