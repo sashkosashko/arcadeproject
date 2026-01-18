@@ -15,9 +15,6 @@ SETTINGPUSH = load_texture(Path("assets") / "settingpush.png")
 HOWPLAYNORM = load_texture(Path("assets") / "howplaynorm.png")
 HOWPLAYPUSH = load_texture(Path("assets") / "howplaypush.png")
 SETTINGSNORM = load_texture(Path("assets") / "settingsnorm.png")
-ONENORM = load_texture(Path("assets") / "onenorm.png")
-TWONORM = load_texture(Path("assets") / "twonorm.png")
-THREENORM = load_texture(Path("assets") / "threenorm.png")
 WALK_TEXTURES = [
     [
         load_texture(
