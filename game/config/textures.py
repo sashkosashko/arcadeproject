@@ -4,23 +4,24 @@ from pathlib import Path
 
 from arcade import load_texture
 
-ASSETS_FOLDER = Path("assets")
-
-GIRL = load_texture(ASSETS_FOLDER / "girl.jpeg")
-CLICK = load_texture(ASSETS_FOLDER / "click.png")
-CONTNORM = load_texture(ASSETS_FOLDER / "contnorm.png")
-EXITNORM = load_texture(ASSETS_FOLDER / "exitnorm.png")
-EXITPUSH = load_texture(ASSETS_FOLDER / "exitpush.png")
-STARTNORM = load_texture(ASSETS_FOLDER / "startnorm.png")
-STARTPUSH = load_texture(ASSETS_FOLDER / "startpush.png")
-SETTINGPUSH = load_texture(ASSETS_FOLDER / "settingpush.png")
-HOWPLAYNORM = load_texture(ASSETS_FOLDER / "howplaynorm.png")
-HOWPLAYPUSH = load_texture(ASSETS_FOLDER / "howplaypush.png")
-SETTINGSNORM = load_texture(ASSETS_FOLDER / "settingsnorm.png")
+CLICK = load_texture(Path("assets") / "click.png")
+CLICK_LEVELS = load_texture(Path("assets") / "click_levels.png")
+CONTNORM = load_texture(Path("assets") / "contnorm.png")
+EXITNORM = load_texture(Path("assets") / "exitnorm.png")
+EXITPUSH = load_texture(Path("assets") / "exitpush.png")
+STARTNORM = load_texture(Path("assets") / "startnorm.png")
+STARTPUSH = load_texture(Path("assets") / "startpush.png")
+SETTINGPUSH = load_texture(Path("assets") / "settingpush.png")
+HOWPLAYNORM = load_texture(Path("assets") / "howplaynorm.png")
+HOWPLAYPUSH = load_texture(Path("assets") / "howplaypush.png")
+SETTINGSNORM = load_texture(Path("assets") / "settingsnorm.png")
+ONENORM = load_texture(Path("assets") / "onenorm.png")
+TWONORM = load_texture(Path("assets") / "twonorm.png")
+THREENORM = load_texture(Path("assets") / "threenorm.png")
 WALK_TEXTURES = [
     [
         load_texture(
-            ASSETS_FOLDER / "moves_sprites" /
+            Path("assets") / "moves_sprites" /
             f"{name.lower()}moves" / f"move{name}{n}.png",
         )
         for n in range(1, 5)
@@ -33,5 +34,5 @@ WALK_TEXTURES = [
     )
 ]
 MOVES_SPRITES_IDLE_PLAYER = load_texture(
-    ASSETS_FOLDER / "moves_sprites" / "idle_player.png",
+    Path("assets") / "moves_sprites" / "idle_player.png",
 )
