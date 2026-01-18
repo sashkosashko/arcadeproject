@@ -18,6 +18,8 @@ SETTINGSNORM = load_texture(Path("assets") / "settingsnorm.png")
 ONENORM = load_texture(Path("assets") / "onenorm.png")
 TWONORM = load_texture(Path("assets") / "twonorm.png")
 THREENORM = load_texture(Path("assets") / "threenorm.png")
+FOURNORM = load_texture(Path("assets") / "fournorm.png")
+FIVENORM = load_texture(Path("assets") / "fivenorm.png")
 WALK_TEXTURES = [
     [
         load_texture(
