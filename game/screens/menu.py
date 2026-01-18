@@ -51,6 +51,8 @@ class MenuScreen(arcade.Window):
             (textures.ONENORM, textures.ONENORM, self.startplay),
             (textures.TWONORM, textures.TWONORM, None),
             (textures.THREENORM, textures.THREENORM, None),
+            (textures.FOURNORM, textures.FOURNORM, None),
+            (textures.FIVENORM, textures.FIVENORM, None),
         ):
             texture_button = UITextureButton(
                 texture=texture,
