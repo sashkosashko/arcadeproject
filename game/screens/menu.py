@@ -48,21 +48,6 @@ class MenuScreen(arcade.Window):
             texture_button.on_click = on_click
             self.box_layout.add(texture_button)
 
-    def setup_menu_widgets_levels(self) -> None:
-        for texture, texture_hovered, on_click in (
-            (textures.ONENORM, textures.ONENORM, self.startplay),
-            (textures.TWONORM, textures.TWONORM, self.startplay),
-            (textures.THREENORM, textures.THREENORM, self.startplay),
-        ):
-            texture_button = UITextureButton(
-                texture=texture,
-                texture_hovered=texture_hovered,
-                texture_pressed=textures.CLICK_LEVELS,
-                scale=4.0,
-            )
-            texture_button.on_click = on_click
-            self.box_layout.add(texture_button)
-
     def setup(self) -> None:
         self.tile_map = arcade.load_tilemap(
             "assets/start_map.tmx",
@@ -83,10 +68,6 @@ class MenuScreen(arcade.Window):
         self.manager.draw()
 
     def play(self, _: arcade.gui.events.UIOnClickEvent) -> None:
-        self.manager.clear()
-        setup_menu_widgets_levels()
-        
-    def startplay(self, _: arcade.gui.events.UIOnClickEvent) -> None:
         arcade.close_window()
         GridScreen(self.width, self.height, self.title)
         arcade.run()
