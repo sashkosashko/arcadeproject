@@ -20,11 +20,14 @@ class MenuScreen(arcade.Window):
         self.tile_scaling = 2
 
         self.anchor_layout = UIAnchorLayout()
+        self.anchor_layout2 = UIAnchorLayout()
         self.box_layout = UIBoxLayout(vertical=True, space_between=10)
+        self.box_layout2 = UIBoxLayout(vertical=False, space_between=10)
 
         self.setup_menu_widgets()
 
         self.anchor_layout.add(self.box_layout)
+        self.anchor_layout2.add(self.box_layout2)
         self.manager.add(self.anchor_layout)
 
         self.set_fullscreen(True)
@@ -33,14 +36,14 @@ class MenuScreen(arcade.Window):
     def setup_menu_widgets(self) -> None:
         """Установка виджетов меню."""
         for texture, texture_hovered, on_click in (
-            (textures.STARTNORM, textures.STARTPUSH, self.play),
-            (textures.SETTINGSNORM, textures.SETTINGPUSH, None),
-            (textures.HOWPLAYNORM, textures.HOWPLAYPUSH, None),
+            (STARTNORM, STARTPUSH, self.play),
+            (SETTINGSNORM, SETTINGPUSH, None),
+            (HOWPLAYNORM, HOWPLAYPUSH, None),
         ):
             texture_button = UITextureButton(
                 texture=texture,
                 texture_hovered=texture_hovered,
-                texture_pressed=textures.CLICK,
+                texture_pressed=CLICK,
                 scale=4.0,
             )
             texture_button.on_click = on_click
@@ -48,20 +51,18 @@ class MenuScreen(arcade.Window):
 
     def setup_menu_widgets_levels(self) -> None:
         for texture, texture_hovered, on_click in (
-            (textures.ONENORM, textures.ONENORM, self.startplay),
-            (textures.TWONORM, textures.TWONORM, None),
-            (textures.THREENORM, textures.THREENORM, None),
-            (textures.FOURNORM, textures.FOURNORM, None),
-            (textures.FIVENORM, textures.FIVENORM, None),
+            (ONENORM, ONENORM, self.startplay),
+            (TWONORM, TWONORM, None),
+            (THREENORM, THREENORM, None),
         ):
             texture_button = UITextureButton(
                 texture=texture,
                 texture_hovered=texture_hovered,
-                texture_pressed=textures.CLICK_LEVELS,
+                texture_pressed=CLICK_LEVELS,
                 scale=4.0,
             )
             texture_button.on_click = on_click
-            self.box_layout.add(texture_button)
+            self.box_layout2.add(texture_button)
 
     def setup(self) -> None:
         self.tile_map = arcade.load_tilemap(
@@ -84,6 +85,7 @@ class MenuScreen(arcade.Window):
 
     def play(self, _: arcade.gui.events.UIOnClickEvent) -> None:
         self.manager.clear()
+        self.manager.add(self.anchor_layout2)
         self.setup_menu_widgets_levels()
         
     def startplay(self, _: arcade.gui.events.UIOnClickEvent) -> None:
