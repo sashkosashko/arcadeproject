@@ -84,7 +84,7 @@ class MenuScreen(arcade.Window):
 
     def play(self, _: arcade.gui.events.UIOnClickEvent) -> None:
         self.manager.clear()
-        setup_menu_widgets_levels()
+        self.setup_menu_widgets_levels()
         
     def startplay(self, _: arcade.gui.events.UIOnClickEvent) -> None:
         arcade.close_window()

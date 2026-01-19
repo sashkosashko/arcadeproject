@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.10" tiledversion="1.11.2" orientation="orthogonal" renderorder="right-down" width="32" height="32" tilewidth="32" tileheight="32" infinite="0" nextlayerid="2" nextobjectid="1">
+ <tileset firstgid="1" source="my_textures1.tsx"/>
+ <tileset firstgid="25" source="tiles.tsx"/>
+ <layer id="1" name="Слой тайлов 1" width="32" height="32">
+  <data encoding="base64" compression="zlib">
+   eJztl9EOgyAMRRtfxrLMvej/8Wl+Sj9tddHJOlZhuQ0vNLkRqfT0RhKR6DwmokUU9XWW3GzkC0oXhdTii9QcZHyVuut4lLkg96v0/LCtAfJpY7GhGI7nXmuA/L1+VJyf8w7+Y4XY2f+pGvmnhA8L5Z9SjsFnIJ9ulUL7/4PPQH73X8+HRfff/Xf/bf2HSjl8/2r5DOR3/59n3SVzTeVx/iPFN+V8/i/hwyLz/nUfX3012v/vPhz86/1n9oH2P2a083I5sP/s//Vdcg8jX1L7CUBrdzw=
+  </data>
+ </layer>
+</map>
