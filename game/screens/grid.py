@@ -1,11 +1,9 @@
 import arcade
-from arcade.gui import (
-    UIManager,
-    UITextureButton,
-)
+from arcade.gui import UIManager
 from arcade.gui.widgets.layout import UIAnchorLayout, UIBoxLayout
 
 from game.components.dialog import Dialog
+from game.components.menu_widgets import setup_menu_widgets
 from game.config import sounds, textures
 
 # Масштаб игры
@@ -58,30 +56,11 @@ class GridScreen(arcade.Window):
         self.set_fullscreen(True)
         self.setup()
 
-    def setup_menu_widgets(self) -> None:
-        """Установка виджетов меню."""
-        self.is_can_go = False
-        if not self.is_menu_widgets_open:
-            self.is_menu_widgets_open = True
-            for texture, texture_hovered, on_click in (
-                (textures.STARTNORM, textures.STARTPUSH, self.play),
-                (textures.SETTINGSNORM, textures.SETTINGPUSH, None),
-                (textures.HOWPLAYNORM, textures.HOWPLAYPUSH, None),
-            ):
-                texture_button = UITextureButton(
-                    texture=texture,
-                    texture_hovered=texture_hovered,
-                    texture_pressed=textures.CLICK,
-                    scale=4.0,
-                )
-                texture_button.on_click = on_click
-                self.box_layout.add(texture_button)
-
     def setup(self) -> None:
         """Запуск игры."""
         self.player_list: arcade.SpriteList = arcade.SpriteList()
         self.tile_map = arcade.load_tilemap(
-            "assets/my_map.tmx",
+            "assets/first_level_map.tmx",
             scaling=self.tile_scaling,
         )
         self.floor_list = self.tile_map.sprite_lists["floor"]
@@ -205,7 +184,14 @@ class GridScreen(arcade.Window):
 
         if key == arcade.key.ESCAPE:
             if self.is_can_go:
-                self.setup_menu_widgets()
+                setup_menu_widgets(
+                    (
+                        (textures.STARTNORM, textures.STARTPUSH, self.play),
+                        (textures.SETTINGSNORM, textures.SETTINGPUSH, None),
+                        (textures.HOWPLAYNORM, textures.HOWPLAYPUSH, None),
+                    ),
+                    self.box_layout,
+                )
             else:
                 # TODO(@iamlostshe): В play нужно что-то передавать
                 self.play()
