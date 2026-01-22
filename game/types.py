@@ -21,7 +21,6 @@ class Buttons:
     continue_: ButtonTexture
     exit_: ButtonTexture
     start: ButtonTexture
-    how_play: ButtonTexture
     settings: ButtonTexture
 
 

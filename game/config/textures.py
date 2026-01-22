@@ -39,7 +39,6 @@ button = Buttons(
             "continue",
             "exit",
             "start",
-            "how_play",
             "settings",
         )
     ),

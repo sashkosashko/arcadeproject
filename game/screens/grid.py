@@ -4,31 +4,8 @@ from arcade.gui.widgets.layout import UIAnchorLayout, UIBoxLayout
 
 from game import config
 from game.components.menu_widgets import setup_menu_widgets
-from game.config import textures, tilemaps
+from game.config import textures
 from game.screens import change_screen
-
-# Масштаб игры
-TILE_SCALING = 3
-
-# Скорость игрока
-SPEED = 10
-
-# Что-то на умном
-CAMERA_LERP = 0.15
-
-# Клавиши управления
-KEYS = (
-    arcade.key.S,
-    arcade.key.A,
-    arcade.key.W,
-    arcade.key.D,
-)
-
-LEVELS_LIST = (
-    tilemaps.FIRST_LEVEL,
-    tilemaps.SECOND_LEVEL,
-    tilemaps.THIRD_LEVEL,
-)
 
 
 class GridScreen(arcade.Window):
@@ -50,9 +27,9 @@ class GridScreen(arcade.Window):
         self.player_texture = textures.MOVES_SPRITES_IDLE_PLAYER
         self.is_can_go = True
         self.speed, self.tile_scaling, self.camera_lerp = (
-            SPEED,
-            TILE_SCALING,
-            CAMERA_LERP,
+            config.SPEED,
+            config.TILE_SCALING,
+            config.CAMERA_LERP,
         )
 
         self.box_layout = UIBoxLayout(vertical=True, space_between=10)
@@ -71,7 +48,7 @@ class GridScreen(arcade.Window):
         """Запуск игры."""
         self.player_list: arcade.SpriteList = arcade.SpriteList()
         self.tile_map = arcade.load_tilemap(
-            LEVELS_LIST[self.level - 1],
+            config.LEVELS_LIST[self.level - 1],
             scaling=self.tile_scaling,
         )
         self.floor_list = self.tile_map.sprite_lists.get("floor")
@@ -85,9 +62,7 @@ class GridScreen(arcade.Window):
         )
 
         self.player = arcade.Sprite(self.player_texture, scale=2)
-        x = self.width // 8
-        y = self.height // 8
-        self.player.position = (x, y)
+        self.player.position = (self.width // 8, self.height // 8)
         self.player_list.append(self.player)
 
         self.walk_textures = textures.WALK_TEXTURES
@@ -112,10 +87,10 @@ class GridScreen(arcade.Window):
                 self.current_texture += 1
                 if self.current_texture > len(self.walk_textures[0]):
                     self.current_texture = 1
-                if not self.keys_pressed or self.keys_pressed not in KEYS:
+                if not self.keys_pressed or self.keys_pressed not in config.KEYS:
                     return
 
-                n = KEYS.index(self.keys_pressed[-1])
+                n = config.KEYS.index(self.keys_pressed[-1])
                 self.player.texture = self.walk_textures[n][self.current_texture - 1]
         else:
             self.player.texture = self.player_texture
@@ -132,13 +107,10 @@ class GridScreen(arcade.Window):
                 i.draw()
 
     def play(self) -> None:
-        self. box_layout = UIBoxLayout(vertical=True, space_between=10)
+        self.box_layout = UIBoxLayout(vertical=True, space_between=10)
 
         self.is_can_go = True
         self.is_menu_widgets_open = False
-
-    def exit(self, event) -> None:
-        arcade.close_window()
 
     def on_update(self, _: float) -> None:
         """Действия при обновлении ."""
@@ -187,7 +159,7 @@ class GridScreen(arcade.Window):
                 # TODO(@iamlostshe): Доработать кнопки
                 # print - просто заглушка
                 setup_menu_widgets(
-                    (textures.button.start, lambda _: self.play()),
+                    (textures.button.continue_, lambda _: self.play()),
                     (textures.button.settings, print),
                     (textures.button.exit_, lambda _: change_screen("menu")),
                     box_layout=self.box_layout,
@@ -205,7 +177,7 @@ class GridScreen(arcade.Window):
         if not self.is_can_go:
             return
 
-        if key in KEYS:
+        if key in config.KEYS:
             self.is_walking = True
 
         match key:

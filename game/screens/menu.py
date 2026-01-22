@@ -36,7 +36,7 @@ class MenuScreen(arcade.Window):
         setup_menu_widgets(
             (textures.button.start, self.play),
             (textures.button.settings, print),
-            (textures.button.how_play, print),
+            (textures.button.exit_, lambda _: arcade.close_window()),
             box_layout=self.box_layout,
         )
 
