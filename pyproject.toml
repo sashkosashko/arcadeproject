@@ -11,6 +11,9 @@ dependencies = [
 [tool.ruff.lint]
 select = ["ALL"]
 ignore = [
+    # Докстроки
+    "D100", "D101", "D102", "D103", "D107",
+
     # Ошибки связанные с кирилицей
     "RUF001", "RUF002", "RUF003",
 

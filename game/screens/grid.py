@@ -2,9 +2,8 @@ import arcade
 from arcade.gui import UIManager
 from arcade.gui.widgets.layout import UIAnchorLayout, UIBoxLayout
 
-from game.components.dialog import Dialog
 from game.components.menu_widgets import setup_menu_widgets
-from game.config import sounds, textures
+from game.config import textures, tilemaps
 
 # Масштаб игры
 TILE_SCALING = 3
@@ -27,22 +26,26 @@ KEYS = (
 class GridScreen(arcade.Window):
     """Класс игры."""
 
-    def __init__(self, width: int, height: int, title: str) -> None:
+    def __init__(self, width: int, height: int, title: str, level: int) -> None:
         """Инициализация класса игры."""
         super().__init__(width, height, title)
-        self.player_texture = textures.MOVES_SPRITES_IDLE_PLAYER
-
-        self.world_camera = arcade.camera.Camera2D()
-        self.gui_camera = arcade.camera.Camera2D()
-
+        self.level = level
+        self.dialog = None
         self.change_x = self.change_y = 0
+
+        self.world_camera = self.gui_camera = arcade.camera.Camera2D()
+
+        # TODO(@iamlostshe): Сделать класс игрока
+        # Эти поля можно представить в виде отдельного класса игрока
+        self.player_texture = textures.MOVES_SPRITES_IDLE_PLAYER
+        self.is_can_go = True
         self.speed, self.tile_scaling, self.camera_lerp = (
             SPEED,
             TILE_SCALING,
             CAMERA_LERP,
         )
+
         self.is_menu_widgets_open = False
-        self.is_can_go = True
 
         self.box_layout = UIBoxLayout(vertical=True, space_between=10)
 
@@ -60,7 +63,11 @@ class GridScreen(arcade.Window):
         """Запуск игры."""
         self.player_list: arcade.SpriteList = arcade.SpriteList()
         self.tile_map = arcade.load_tilemap(
-            "assets/first_level_map.tmx",
+            [
+                tilemaps.FIRST_LEVEL,
+                tilemaps.SECOND_LEVEL,
+                tilemaps.THIRD_LEVEL,
+            ][self.level - 1],
             scaling=self.tile_scaling,
         )
         self.floor_list = self.tile_map.sprite_lists["floor"]
@@ -79,7 +86,6 @@ class GridScreen(arcade.Window):
         self.player.position = (x, y)
         self.player_list.append(self.player)
 
-        # Загрузка текстур анимаций персонажа
         self.walk_textures = textures.WALK_TEXTURES
 
         self.texture_change_time = .0
