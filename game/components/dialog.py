@@ -39,34 +39,34 @@ class Dialog:
         arcade.draw_rect_filled(
             arcade.rect.XYWH(
                 WIDTH // 2,
-                HEIGHT // 2 - HEIGHT * .3,
-                WIDTH * .85,
-                HEIGHT * .3,
+                HEIGHT // 2 - HEIGHT * 0.3,
+                WIDTH * 0.85,
+                HEIGHT * 0.3,
             ),
             arcade.color.BLACK,
         )
         arcade.draw_texture_rect(
             self.texture,
             arcade.rect.XYWH(
-                WIDTH * .85,
-                HEIGHT // 2 - HEIGHT * .3,
-                HEIGHT * .3,
-                HEIGHT * .3,
+                WIDTH * 0.85,
+                HEIGHT // 2 - HEIGHT * 0.3,
+                HEIGHT * 0.3,
+                HEIGHT * 0.3,
             ),
         )
         arcade.Text(
             self.title,
-            int(WIDTH * .1),
-            HEIGHT // 2 - HEIGHT * .24,
+            int(WIDTH * 0.1),
+            HEIGHT // 2 - HEIGHT * 0.24,
             arcade.color.WHITE,
             45,
-            width=int(WIDTH * .35),
+            width=int(WIDTH * 0.35),
         ).draw()
         arcade.Text(
             self.text,
-            int(WIDTH * .1),
-            HEIGHT // 2 - HEIGHT * .3,
+            int(WIDTH * 0.1),
+            HEIGHT // 2 - HEIGHT * 0.3,
             arcade.color.WHITE,
             20,
-            width=int(WIDTH * .35),
+            width=int(WIDTH * 0.35),
         ).draw()

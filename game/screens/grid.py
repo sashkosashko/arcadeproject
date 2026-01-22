@@ -2,8 +2,10 @@ import arcade
 from arcade.gui import UIManager
 from arcade.gui.widgets.layout import UIAnchorLayout, UIBoxLayout
 
+from game import config
 from game.components.menu_widgets import setup_menu_widgets
 from game.config import textures, tilemaps
+from game.screens import change_screen
 
 # Масштаб игры
 TILE_SCALING = 3
@@ -22,15 +24,23 @@ KEYS = (
     arcade.key.D,
 )
 
+LEVELS_LIST = (
+    tilemaps.FIRST_LEVEL,
+    tilemaps.SECOND_LEVEL,
+    tilemaps.THIRD_LEVEL,
+)
+
 
 class GridScreen(arcade.Window):
     """Класс игры."""
 
-    def __init__(self, width: int, height: int, title: str, level: int) -> None:
+    def __init__(self, level: int) -> None:
         """Инициализация класса игры."""
-        super().__init__(width, height, title)
+        super().__init__(config.WIDTH, config.HEIGHT, config.TITLE)
         self.level = level
+
         self.dialog = None
+        self.is_menu_widgets_open = False
         self.change_x = self.change_y = 0
 
         self.world_camera = self.gui_camera = arcade.camera.Camera2D()
@@ -44,8 +54,6 @@ class GridScreen(arcade.Window):
             TILE_SCALING,
             CAMERA_LERP,
         )
-
-        self.is_menu_widgets_open = False
 
         self.box_layout = UIBoxLayout(vertical=True, space_between=10)
 
@@ -63,15 +71,11 @@ class GridScreen(arcade.Window):
         """Запуск игры."""
         self.player_list: arcade.SpriteList = arcade.SpriteList()
         self.tile_map = arcade.load_tilemap(
-            [
-                tilemaps.FIRST_LEVEL,
-                tilemaps.SECOND_LEVEL,
-                tilemaps.THIRD_LEVEL,
-            ][self.level - 1],
+            LEVELS_LIST[self.level - 1],
             scaling=self.tile_scaling,
         )
-        self.floor_list = self.tile_map.sprite_lists["floor"]
-        self.collision_list = self.tile_map.sprite_lists["collision"]
+        self.floor_list = self.tile_map.sprite_lists.get("floor")
+        self.collision_list = self.tile_map.sprite_lists.get("collision")
 
         self.world_width = int(
             self.tile_map.width * self.tile_map.tile_width * self.tile_scaling,
@@ -88,8 +92,8 @@ class GridScreen(arcade.Window):
 
         self.walk_textures = textures.WALK_TEXTURES
 
-        self.texture_change_time = .0
-        self.texture_change_delay = .1  # секунд на кадр
+        self.texture_change_time = 0.0
+        self.texture_change_delay = 0.1  # секунд на кадр
         self.is_walking = False
         self.current_texture = 0
         self.keys_pressed: list[int] = []
@@ -112,9 +116,7 @@ class GridScreen(arcade.Window):
                     return
 
                 n = KEYS.index(self.keys_pressed[-1])
-                self.player.texture = self.walk_textures[n][
-                    self.current_texture - 1
-                ]
+                self.player.texture = self.walk_textures[n][self.current_texture - 1]
         else:
             self.player.texture = self.player_texture
 
@@ -123,18 +125,17 @@ class GridScreen(arcade.Window):
         self.clear()
 
         self.world_camera.use()
-        self.floor_list.draw()
-        self.player_list.draw()
-        self.manager.draw()
-
-        if self.dialog is not None:
-            self.dialog.draw()
-
         self.gui_camera.use()
 
-    def play(self, event) -> None:
-        self.manager.clear()
+        for i in (self.floor_list, self.player_list, self.manager, self.dialog):
+            if i is not None:
+                i.draw()
+
+    def play(self) -> None:
+        self. box_layout = UIBoxLayout(vertical=True, space_between=10)
+
         self.is_can_go = True
+        self.is_menu_widgets_open = False
 
     def exit(self, event) -> None:
         arcade.close_window()
@@ -186,16 +187,18 @@ class GridScreen(arcade.Window):
                 # TODO(@iamlostshe): Доработать кнопки
                 # print - просто заглушка
                 setup_menu_widgets(
-                    (textures.button.start, self.play),
+                    (textures.button.start, lambda _: self.play()),
                     (textures.button.settings, print),
-                    (textures.button.how_play, print),
+                    (textures.button.exit_, lambda _: change_screen("menu")),
                     box_layout=self.box_layout,
                 )
-            else:
-                # TODO(@iamlostshe): В play нужно что-то передавать
-                self.play()
+                self.is_can_go = False
+                self.is_menu_widgets_open = True
                 return
-        elif key == arcade.key.ENTER:
+            self.play()
+            return
+
+        if key == arcade.key.ENTER:
             self.dialog = None
             return
 

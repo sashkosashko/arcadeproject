@@ -2,17 +2,18 @@ import arcade
 from arcade.gui import UIManager
 from arcade.gui.widgets.layout import UIAnchorLayout, UIBoxLayout
 
+from game import config
 from game.components.menu_widgets import setup_menu_widgets
 from game.config import textures, tilemaps
-from game.screens import GridScreen
+from game.screens import change_screen
 
 
 class MenuScreen(arcade.Window):
     """Начальное окно игры."""
 
-    def __init__(self, width: int, height: int, title: str) -> None:
-        super().__init__(width, height, title)
-        self.title = title
+    def __init__(self) -> None:
+        super().__init__(config.WIDTH, config.HEIGHT, config.TITLE)
+        self.title = config.TITLE
         self.manager = UIManager()
         self.manager.enable()
         self.tile_scaling = 2
@@ -64,13 +65,8 @@ class MenuScreen(arcade.Window):
         # TODO(@iamlostshe): Доработать кнопки
         # print - просто заглушка
         setup_menu_widgets(
-            (textures.number.one, lambda x: self.start_play(x, 1)),
-            (textures.number.two, lambda x: self.start_play(x, 2)),
-            (textures.number.three, lambda x: self.start_play(x, 3)),
+            (textures.number.one, lambda _: change_screen("grid", 1)),
+            (textures.number.two, lambda _: change_screen("grid", 2)),
+            (textures.number.three, lambda _: change_screen("grid", 3)),
             box_layout=self.box_layout2,
         )
-
-    def start_play(self, _: arcade.gui.events.UIOnClickEvent, level: int) -> None:
-        arcade.close_window()
-        GridScreen(self.width, self.height, self.title, level)
-        arcade.run()

@@ -24,6 +24,7 @@ class Buttons:
     how_play: ButtonTexture
     settings: ButtonTexture
 
+
 @dataclass
 class NumberButtonTexture:
     """Текстура кнопки (виджета) выбора уровня (карты)."""
@@ -33,5 +34,6 @@ class NumberButtonTexture:
     three: ButtonTexture
     four: ButtonTexture
     five: ButtonTexture
+
 
 # TODO(@iamlostshe): Сделать класс игрока
