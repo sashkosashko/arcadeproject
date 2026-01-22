@@ -22,13 +22,13 @@ class MenuScreen(arcade.Window):
         self.box_layout = UIBoxLayout(vertical=True, space_between=10)
         self.box_layout2 = UIBoxLayout(vertical=False, space_between=10)
 
+        # TODO(@iamlostshe): Доработать кнопки
+        # print - просто заглушка
         setup_menu_widgets(
-            (
-                (textures.STARTNORM, textures.STARTPUSH, self.play),
-                (textures.SETTINGSNORM, textures.SETTINGPUSH, None),
-                (textures.HOWPLAYNORM, textures.HOWPLAYPUSH, None),
-            ),
-            self.box_layout,
+            (textures.button.start, self.play),
+            (textures.button.settings, print),
+            (textures.button.how_play, print),
+            box_layout=self.box_layout,
         )
 
         self.anchor_layout.add(self.box_layout)
@@ -60,13 +60,13 @@ class MenuScreen(arcade.Window):
     def play(self, _: arcade.gui.events.UIOnClickEvent) -> None:
         self.manager.clear()
         self.manager.add(self.anchor_layout2)
+        # TODO(@iamlostshe): Доработать кнопки
+        # print - просто заглушка
         setup_menu_widgets(
-            (
-                (textures.ONENORM, textures.ONENORM, self.startplay),
-                (textures.TWONORM, textures.TWONORM, None),
-                (textures.THREENORM, textures.THREENORM, None),
-            ),
-            self.box_layout2,
+            (textures.number.one, self.startplay),
+            (textures.number.two, print),
+            (textures.number.three, print),
+            box_layout=self.box_layout2,
         )
 
     def startplay(self, _: arcade.gui.events.UIOnClickEvent) -> None:

@@ -4,27 +4,54 @@ from pathlib import Path
 
 from arcade import load_texture
 
-CLICK = load_texture(Path("assets") / "click.png")
-CLICK_LEVELS = load_texture(Path("assets") / "click_levels.png")
-CONTNORM = load_texture(Path("assets") / "contnorm.png")
-EXITNORM = load_texture(Path("assets") / "exitnorm.png")
-EXITPUSH = load_texture(Path("assets") / "exitpush.png")
-STARTNORM = load_texture(Path("assets") / "startnorm.png")
-STARTPUSH = load_texture(Path("assets") / "startpush.png")
-SETTINGPUSH = load_texture(Path("assets") / "settingpush.png")
-HOWPLAYNORM = load_texture(Path("assets") / "howplaynorm.png")
-HOWPLAYPUSH = load_texture(Path("assets") / "howplaypush.png")
-SETTINGSNORM = load_texture(Path("assets") / "settingsnorm.png")
-ONENORM = load_texture(Path("assets") / "onenorm.png")
-TWONORM = load_texture(Path("assets") / "twonorm.png")
-THREENORM = load_texture(Path("assets") / "threenorm.png")
-FOURNORM = load_texture(Path("assets") / "fournorm.png")
-FIVENORM = load_texture(Path("assets") / "fivenorm.png")
+from game.types import Buttons, ButtonTexture, NumberButtonTexture
+
+_TEXTURES_FOLDER = Path("assets") / "textures"
+
+_BUTTONS_FOLDER = _TEXTURES_FOLDER / "buttons"
+_CLICK_FOLDER = _BUTTONS_FOLDER / "click"
+_NORM_FOLDER = _BUTTONS_FOLDER / "norm"
+_PUSH_FOLDER = _BUTTONS_FOLDER / "push"
+_NUM_FOLDER = _NORM_FOLDER / "numbers"
+
+_CLICK = load_texture(_CLICK_FOLDER / "click.png")
+_CLICK_LEVELS = load_texture(_CLICK_FOLDER / "click_levels.png")
+
+number = NumberButtonTexture(
+    *(
+        ButtonTexture(
+            load_texture(_NUM_FOLDER / f"{i}.png"),
+            load_texture(_NUM_FOLDER / f"{i}.png"),
+            _CLICK_LEVELS,
+        )
+        for i in range(1, 6)
+    ),
+)
+
+button = Buttons(
+    *(
+        ButtonTexture(
+            load_texture(_NORM_FOLDER / f"{i}.png"),
+            load_texture(_PUSH_FOLDER / f"{i}.png"),
+            _CLICK,
+        )
+        for i in (
+            "continue",
+            "exit",
+            "start",
+            "how_play",
+            "settings",
+        )
+    ),
+)
+
 WALK_TEXTURES = [
     [
         load_texture(
-            Path("assets") / "moves_sprites" /
-            f"{name.lower()}moves" / f"move{name}{n}.png",
+            _TEXTURES_FOLDER
+            / "moves_sprites"
+            / f"{name.lower()}moves"
+            / f"move{name}{n}.png",
         )
         for n in range(1, 5)
     ]
@@ -35,6 +62,7 @@ WALK_TEXTURES = [
         "RIGHT",
     )
 ]
+
 MOVES_SPRITES_IDLE_PLAYER = load_texture(
-    Path("assets") / "moves_sprites" / "idle_player.png",
+    _TEXTURES_FOLDER / "moves_sprites" / "idle_player.png",
 )

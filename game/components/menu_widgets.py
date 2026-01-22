@@ -3,19 +3,24 @@
 Оболочка для удобного взаимодействия.
 """
 
-from arcade.gui import UITextureButton
+from collections.abc import Callable
+
+from arcade.gui import UIOnClickEvent, UITextureButton
 from arcade.gui.widgets.layout import UIBoxLayout
 
-from game.config import textures
+from game.types import ButtonTexture
 
 
-def setup_menu_widgets(widgets: tuple, box_layout: UIBoxLayout) -> None:
+def setup_menu_widgets(
+    *args: tuple[ButtonTexture, Callable[[UIOnClickEvent], None]],
+    box_layout: UIBoxLayout,
+) -> None:
     """Установка виджетов меню."""
-    for texture, texture_hovered, on_click in widgets:
+    for b, on_click in args:
         texture_button = UITextureButton(
-            texture=texture,
-            texture_hovered=texture_hovered,
-            texture_pressed=textures.CLICK,
+            texture=b.texture,
+            texture_hovered=b.hover_texture,
+            texture_pressed=b.click,
             scale=4.0,
         )
         texture_button.on_click = on_click

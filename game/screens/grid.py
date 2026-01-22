@@ -93,13 +93,6 @@ class GridScreen(arcade.Window):
             self.collision_list,
         )
 
-        self.dialog: Dialog | None = Dialog(
-            "???",
-            "Ахх.. Где я?. Голова раскалывается.. Как я тут оказалась?.",
-            sounds.BEGINNING,
-            textures.GIRL,
-        )
-
     def update_animation(self, delta_time: float = 1 / 60) -> None:
         """Обновление анимации."""
         if self.is_walking:
@@ -184,13 +177,13 @@ class GridScreen(arcade.Window):
 
         if key == arcade.key.ESCAPE:
             if self.is_can_go:
+                # TODO(@iamlostshe): Доработать кнопки
+                # print - просто заглушка
                 setup_menu_widgets(
-                    (
-                        (textures.STARTNORM, textures.STARTPUSH, self.play),
-                        (textures.SETTINGSNORM, textures.SETTINGPUSH, None),
-                        (textures.HOWPLAYNORM, textures.HOWPLAYPUSH, None),
-                    ),
-                    self.box_layout,
+                    (textures.button.start, self.play),
+                    (textures.button.settings, print),
+                    (textures.button.how_play, print),
+                    box_layout=self.box_layout,
                 )
             else:
                 # TODO(@iamlostshe): В play нужно что-то передавать
