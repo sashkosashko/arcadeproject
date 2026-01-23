@@ -87,7 +87,7 @@ class GridScreen(arcade.Window):
                 self.current_texture += 1
                 if self.current_texture > len(self.walk_textures[0]):
                     self.current_texture = 1
-                if not self.keys_pressed or self.keys_pressed not in config.KEYS:
+                if not self.keys_pressed or self.keys_pressed[-1] not in config.KEYS:
                     return
 
                 n = config.KEYS.index(self.keys_pressed[-1])
