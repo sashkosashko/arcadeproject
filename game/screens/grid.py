@@ -62,7 +62,7 @@ class GridScreen(arcade.Window):
         )
 
         self.player = arcade.Sprite(self.player_texture, scale=2)
-        self.player.position = (self.width // 8, self.height // 8)
+        self.player.position = (self.width // 1.25, self.height // 3.5)
         self.player_list.append(self.player)
 
         self.walk_textures = textures.WALK_TEXTURES
