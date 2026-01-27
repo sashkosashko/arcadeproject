@@ -1,10 +1,10 @@
+import random
 from pathlib import Path
 
 import arcade
-import random
-from arcade.particles import FadeParticle, Emitter, EmitMaintainCount
 from arcade.gui import UIManager
 from arcade.gui.widgets.layout import UIAnchorLayout, UIBoxLayout
+from arcade.particles import EmitMaintainCount, Emitter, FadeParticle
 
 from game import config
 from game.change_screen import change_screen
@@ -86,15 +86,12 @@ class BaseScreen(arcade.Window):
             self.collision_list,
         )
 
-        # Отображение диалогов
-        self.show_dialogs()
-
-    def make_trail(self, attached_sprite, maintain=30):
+    def make_trail(self, attached_sprite, maintain: int = 30):
         """Создает эмиттер для следа за игроком."""
-        emit = Emitter(
+        return Emitter(
             center_xy=(attached_sprite.center_x, attached_sprite.center_y),
             emit_controller=EmitMaintainCount(maintain),
-            particle_factory=lambda e: FadeParticle(
+            particle_factory=lambda _: FadeParticle(
                 filename_or_texture=random.choice(self.SPARK_TEX),
                 change_xy=arcade.math.rand_in_circle((0.0, 0.0), 1.6),
                 lifetime=random.uniform(0.3, 0.5),
@@ -103,10 +100,6 @@ class BaseScreen(arcade.Window):
                 scale=random.uniform(0.2, 0.35),
             ),
         )
-        return emit
-
-    def show_dialogs(self) -> None:
-        """Показ диалогов."""
 
     def check_change_level(self) -> None:
         """Проверка события переключения между уровнями."""
@@ -137,7 +130,7 @@ class BaseScreen(arcade.Window):
         self.world_camera.use()
         self.gui_camera.use()
 
-        for i in (self.floor_list, self.player_list, self.manager, self.dialog):
+        for i in (self.floor_list, self.dialog, self.player_list, self.manager):
             if i is not None:
                 i.draw()
 

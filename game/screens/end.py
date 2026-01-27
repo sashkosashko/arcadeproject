@@ -2,16 +2,16 @@ from game.components import Dialog
 from game.config import sounds, tilemaps
 from game.screens import BaseScreen
 
+SPAWN_POS = (380, 330)
+
 
 class EndScreen(BaseScreen):
     """Окончательный экран."""
 
     def __init__(self) -> None:
         """Инициализация класса."""
-        super().__init__((0, 0), tilemaps.END)
+        super().__init__(SPAWN_POS, tilemaps.END)
 
-    def show_dialogs(self) -> None:
-        """Показ диалогов."""
         self.dialog = Dialog(
             "Лиза",
             "Фух... Мы справились!..",

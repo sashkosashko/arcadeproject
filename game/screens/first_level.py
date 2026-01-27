@@ -5,16 +5,16 @@ from game.components import Dialog
 from game.config import sounds, tilemaps
 from game.screens import BaseScreen
 
+SPAWN_POS = 1540, 280
+
 
 class FirstLevelScreen(BaseScreen):
     """Первый уровень."""
 
     def __init__(self) -> None:
         """Инициализация класса."""
-        super().__init__((0, 0), tilemaps.FIRST_LEVEL)
+        super().__init__(SPAWN_POS, tilemaps.FIRST_LEVEL)
 
-    def show_dialogs(self) -> None:
-        """Показ диалогов."""
         self.dialog = Dialog(
             "Лиза",
             "Ура!..",
@@ -30,4 +30,4 @@ class FirstLevelScreen(BaseScreen):
             and self.player.center_y > 3002
             and self.player.center_y < 3292
         ):
-            change_screen("grid", 2)
+            change_screen("2")
