@@ -3,8 +3,8 @@ from arcade.gui import UIManager
 from arcade.gui.widgets.layout import UIAnchorLayout, UIBoxLayout
 
 from game import config
-from game.components.menu_widgets import setup_menu_widgets
-from game.config import textures
+from game.components import Dialog, setup_menu_widgets
+from game.config import sounds, textures
 from game.screens import change_screen
 
 
@@ -44,6 +44,34 @@ class GridScreen(arcade.Window):
         self.set_fullscreen(True)
 
         self.setup()
+
+        self.show_dialogs()
+
+    def show_dialogs(self) -> None:
+        """Показ диалогов."""
+        if self.level == 0:
+            self.dialog = Dialog(
+                "???",
+                "Ахх.. Где я?. Голова раскалывается.. Как я тут оказалась?.",
+                sounds.BEGINNING,
+                pos=1,
+            )
+
+        if self.level == 1:
+            self.dialog = Dialog(
+                "Лиза",
+                "Ура!..",
+                sounds.HOORAY,
+                pos=1,
+            )
+
+        if self.level == 2:
+            self.dialog = Dialog(
+                "Лиза",
+                "Фух... Мы справились!..",
+                sounds.PHEW_WE_DID_IT,
+                pos=1,
+            )
 
     def setup(self) -> None:
         """Запуск игры."""

@@ -24,49 +24,54 @@ class Dialog:
         self,
         title: str,
         text: str,
-        sound: arcade.sound.Sound,
-        texture: arcade.texture.texture.Texture,
+        sound: arcade.sound.Sound | None = None,
+        texture: arcade.texture.texture.Texture | None = None,
+        pos: int = 0,
     ) -> None:
         """Инициализация параметров и воспроизведение аудио."""
         self.title = title
         self.text = text
         self.texture = texture
 
-        arcade.play_sound(sound)
+        self.pos = HEIGHT // 2 + (0, HEIGHT * 0.6)[pos]
+
+        if sound:
+            arcade.play_sound(sound)
 
     def draw(self) -> None:
         """Отображение далогового окна."""
         arcade.draw_rect_filled(
             arcade.rect.XYWH(
                 WIDTH // 2,
-                HEIGHT // 2 - HEIGHT * 0.3,
+                self.pos - HEIGHT * .3,
                 WIDTH * 0.85,
-                HEIGHT * 0.3,
+                HEIGHT * .3,
             ),
             arcade.color.BLACK,
         )
-        arcade.draw_texture_rect(
-            self.texture,
-            arcade.rect.XYWH(
-                WIDTH * 0.85,
-                HEIGHT // 2 - HEIGHT * 0.3,
-                HEIGHT * 0.3,
-                HEIGHT * 0.3,
-            ),
-        )
+        if self.texture:
+            arcade.draw_texture_rect(
+                self.texture,
+                arcade.rect.XYWH(
+                    WIDTH * .85,
+                    self.pos - HEIGHT * 0.3,
+                    HEIGHT * .3,
+                    HEIGHT * .3,
+                ),
+            )
         arcade.Text(
             self.title,
-            int(WIDTH * 0.1),
-            HEIGHT // 2 - HEIGHT * 0.24,
+            int(WIDTH * .1),
+            self.pos - HEIGHT * .24,
             arcade.color.WHITE,
             45,
-            width=int(WIDTH * 0.35),
+            width=int(WIDTH * .35),
         ).draw()
         arcade.Text(
             self.text,
-            int(WIDTH * 0.1),
-            HEIGHT // 2 - HEIGHT * 0.3,
+            int(WIDTH * .1),
+            self.pos - HEIGHT * .3,
             arcade.color.WHITE,
             20,
-            width=int(WIDTH * 0.35),
+            width=int(WIDTH * .35),
         ).draw()
