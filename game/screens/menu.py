@@ -49,13 +49,6 @@ class MenuScreen(arcade.Window):
         )
         self.floor_list = self.tile_map.sprite_lists["start"]
 
-        self.world_width = int(
-            self.tile_map.width * self.tile_map.tile_width * self.tile_scaling,
-        )
-        self.world_height = int(
-            self.tile_map.height * self.tile_map.tile_height * self.tile_scaling,
-        )
-
     def on_draw(self) -> None:
         self.clear()
         self.floor_list.draw()

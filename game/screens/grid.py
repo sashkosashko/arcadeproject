@@ -6,6 +6,7 @@ from game import config
 from game.components import Dialog, setup_menu_widgets
 from game.config import sounds, textures
 from game.screens import change_screen
+from game.types import Player
 
 
 class GridScreen(arcade.Window):
@@ -13,38 +14,59 @@ class GridScreen(arcade.Window):
 
     def __init__(self, level: int) -> None:
         """Инициализация класса игры."""
+        # Параметры, передаваемые в __init__
         super().__init__(config.WIDTH, config.HEIGHT, config.TITLE)
         self.level = level
 
-        self.dialog = None
-        self.is_menu_widgets_open = False
-        self.change_x = self.change_y = 0
+        # Инициализация переменных
+        self.dialog: Dialog | None = None
+        self.is_menu_widgets_open = self.is_walking = False
+        self.change_x = self.change_y = self.current_texture = 0
+        self.texture_change_time = 0.0
+        self.texture_change_delay = 0.1  # секунд на кадр
+        self.keys_pressed: list[int] = []
 
+        # Настройка камер / окон
+        self.set_fullscreen(True)
         self.world_camera = self.gui_camera = arcade.camera.Camera2D()
 
-        # TODO(@iamlostshe): Сделать класс игрока
-        # Эти поля можно представить в виде отдельного класса игрока
+        # Инициализация игрока
+        self.player_list: arcade.SpriteList = arcade.SpriteList()
+
         self.player_texture = textures.MOVES_SPRITES_IDLE_PLAYER
-        self.is_can_go = True
-        self.speed, self.tile_scaling, self.camera_lerp = (
-            config.SPEED,
-            config.TILE_SCALING,
-            config.CAMERA_LERP,
-        )
+        self.player = Player(self.player_texture, 2, config.SPEED)
+        self.player.position = (self.width // 1.25, self.height // 3.5)
+        self.player_list.append(self.player)
 
+        # Меню
         self.box_layout = UIBoxLayout(vertical=True, space_between=10)
-
         self.anchor_layout = UIAnchorLayout()
         self.anchor_layout.add(self.box_layout)
-
         self.manager = UIManager()
         self.manager.enable()
         self.manager.add(self.anchor_layout)
 
-        self.set_fullscreen(True)
+        # Загрузка карты и мира
+        self.tile_map = arcade.load_tilemap(
+            config.LEVELS_LIST[self.level],
+            scaling=config.TILE_SCALING,
+        )
+        self.floor_list, self.collision_list = (
+            self.tile_map.sprite_lists.get("floor"),
+            self.tile_map.sprite_lists.get("collision"),
+        )
+        self.world_width, self.world_height = (
+            int(self.tile_map.width * self.tile_map.tile_width * config.TILE_SCALING),
+            int(self.tile_map.height * self.tile_map.tile_height * config.TILE_SCALING),
+        )
 
-        self.setup()
+        # Настройка физики
+        self.physics_engine = arcade.PhysicsEngineSimple(
+            self.player,
+            self.collision_list,
+        )
 
+        # Отображение диалогов
         self.show_dialogs()
 
     def show_dialogs(self) -> None:
@@ -73,40 +95,6 @@ class GridScreen(arcade.Window):
                 pos=1,
             )
 
-    def setup(self) -> None:
-        """Запуск игры."""
-        self.player_list: arcade.SpriteList = arcade.SpriteList()
-        self.tile_map = arcade.load_tilemap(
-            config.LEVELS_LIST[self.level],
-            scaling=self.tile_scaling,
-        )
-        self.floor_list = self.tile_map.sprite_lists.get("floor")
-        self.collision_list = self.tile_map.sprite_lists.get("collision")
-
-        self.world_width = int(
-            self.tile_map.width * self.tile_map.tile_width * self.tile_scaling,
-        )
-        self.world_height = int(
-            self.tile_map.height * self.tile_map.tile_height * self.tile_scaling,
-        )
-
-        self.player = arcade.Sprite(self.player_texture, scale=2)
-        self.player.position = (self.width // 1.25, self.height // 3.5)
-        self.player_list.append(self.player)
-
-        self.walk_textures = textures.WALK_TEXTURES
-
-        self.texture_change_time = 0.0
-        self.texture_change_delay = 0.1  # секунд на кадр
-        self.is_walking = False
-        self.current_texture = 0
-        self.keys_pressed: list[int] = []
-
-        self.physics_engine = arcade.PhysicsEngineSimple(
-            self.player,
-            self.collision_list,
-        )
-
     def update_animation(self, delta_time: float = 1 / 60) -> None:
         """Обновление анимации."""
         if self.is_walking:
@@ -114,13 +102,15 @@ class GridScreen(arcade.Window):
             if self.texture_change_time >= self.texture_change_delay:
                 self.texture_change_time = 0
                 self.current_texture += 1
-                if self.current_texture > len(self.walk_textures[0]):
+                if self.current_texture > len(textures.WALK_TEXTURES[0]):
                     self.current_texture = 1
                 if not self.keys_pressed or self.keys_pressed[-1] not in config.KEYS:
                     return
 
                 n = config.KEYS.index(self.keys_pressed[-1])
-                self.player.texture = self.walk_textures[n][self.current_texture - 1]
+                self.player.texture = textures.WALK_TEXTURES[n][
+                    self.current_texture - 1
+                ]
         else:
             self.player.texture = self.player_texture
 
@@ -138,7 +128,7 @@ class GridScreen(arcade.Window):
     def play(self) -> None:
         self.box_layout = UIBoxLayout(vertical=True, space_between=10)
 
-        self.is_can_go = True
+        self.player.can_go = True
         self.is_menu_widgets_open = False
 
     def on_update(self, _: float) -> None:
@@ -173,8 +163,8 @@ class GridScreen(arcade.Window):
         target_y = max(half_h, min(self.world_height - half_h, target_y))
 
         # Плавно к цели, аналог arcade.math.lerp_2d, но руками
-        smooth_x = (1 - self.camera_lerp) * cam_x + self.camera_lerp * target_x
-        smooth_y = (1 - self.camera_lerp) * cam_y + self.camera_lerp * target_y
+        smooth_x = (1 - config.CAMERA_LERP) * cam_x + config.CAMERA_LERP * target_x
+        smooth_y = (1 - config.CAMERA_LERP) * cam_y + config.CAMERA_LERP * target_y
 
         self.world_camera.position = (smooth_x, smooth_y)
         self.physics_engine.update()
@@ -200,13 +190,13 @@ class GridScreen(arcade.Window):
         self.keys_pressed.append(key)
 
         if key == arcade.key.ESCAPE:
-            if self.is_can_go:
+            if self.player.can_go:
                 setup_menu_widgets(
                     (textures.button.continue_, lambda _: self.play()),
                     (textures.button.exit_, lambda _: change_screen("menu")),
                     box_layout=self.box_layout,
                 )
-                self.is_can_go = False
+                self.player.can_go = False
                 self.is_menu_widgets_open = True
                 return
             self.play()
@@ -216,7 +206,7 @@ class GridScreen(arcade.Window):
             self.dialog = None
             return
 
-        if not self.is_can_go:
+        if not self.player.can_go:
             return
 
         if key in config.KEYS:
@@ -224,13 +214,13 @@ class GridScreen(arcade.Window):
 
         match key:
             case arcade.key.S:
-                self.change_y = -self.speed
+                self.change_y = -self.player.speed
             case arcade.key.A:
-                self.change_x = -self.speed
+                self.change_x = -self.player.speed
             case arcade.key.W:
-                self.change_y = self.speed
+                self.change_y = self.player.speed
             case arcade.key.D:
-                self.change_x = self.speed
+                self.change_x = self.player.speed
 
     def on_key_release(self, key: int, _: int) -> None:
         """Обработка отпускания кнопок клавиатуры."""

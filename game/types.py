@@ -2,6 +2,7 @@
 
 from dataclasses import dataclass
 
+import arcade
 from arcade.texture import Texture
 
 
@@ -35,4 +36,12 @@ class NumberButtonTexture:
     five: ButtonTexture
 
 
-# TODO(@iamlostshe): Сделать класс игрока
+class Player(arcade.Sprite):
+    """Класс игрока."""
+
+    can_go = True
+
+    def __init__(self, texture: Texture, scale: int, speed: int) -> None:
+        """Инициализация игрока."""
+        super().__init__(texture, scale)
+        self.speed = speed
