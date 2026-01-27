@@ -42,13 +42,14 @@ class GridScreen(arcade.Window):
         self.manager.add(self.anchor_layout)
 
         self.set_fullscreen(True)
+
         self.setup()
 
     def setup(self) -> None:
         """Запуск игры."""
         self.player_list: arcade.SpriteList = arcade.SpriteList()
         self.tile_map = arcade.load_tilemap(
-            config.LEVELS_LIST[self.level - 1],
+            config.LEVELS_LIST[self.level],
             scaling=self.tile_scaling,
         )
         self.floor_list = self.tile_map.sprite_lists.get("floor")
@@ -150,17 +151,30 @@ class GridScreen(arcade.Window):
         self.world_camera.position = (smooth_x, smooth_y)
         self.physics_engine.update()
 
+        self.check_change_level()
+
+    def check_change_level(self) -> None:
+        """Проверка события переключения между уровнями."""
+        if (
+            self.level == 0
+            and self.player.center_x > 2506
+            and self.player.center_y < 2576
+        ):
+            change_screen("grid", 1)
+            return
+
+        if self.level == 1 and self.player.center_x > 1436 and self.player.center_x < 1816 and self.player.center_y > 3002 and self.player.center_y < 3292:
+            change_screen("grid", 2)
+            return
+
     def on_key_press(self, key: int, _: int) -> None:
         """Обработка нажатия кнопок клавиатуры."""
         self.keys_pressed.append(key)
 
         if key == arcade.key.ESCAPE:
             if self.is_can_go:
-                # TODO(@iamlostshe): Доработать кнопки
-                # print - просто заглушка
                 setup_menu_widgets(
                     (textures.button.continue_, lambda _: self.play()),
-                    (textures.button.settings, print),
                     (textures.button.exit_, lambda _: change_screen("menu")),
                     box_layout=self.box_layout,
                 )

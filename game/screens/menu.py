@@ -7,6 +7,12 @@ from game.components.menu_widgets import setup_menu_widgets
 from game.config import textures, tilemaps
 from game.screens import change_screen
 
+_BUTTONS = (
+    textures.number.one,
+    textures.number.two,
+    textures.number.three,
+)
+
 
 class MenuScreen(arcade.Window):
     """Начальное окно игры."""
@@ -31,17 +37,14 @@ class MenuScreen(arcade.Window):
         self.setup()
 
     def setup(self) -> None:
-        # TODO(@iamlostshe): Доработать кнопки
-        # print - просто заглушка
         setup_menu_widgets(
             (textures.button.start, self.play),
-            (textures.button.settings, print),
             (textures.button.exit_, lambda _: arcade.close_window()),
             box_layout=self.box_layout,
         )
 
         self.tile_map = arcade.load_tilemap(
-            tilemaps.START_MAP,
+            tilemaps.MENU,
             scaling=self.tile_scaling,
         )
         self.floor_list = self.tile_map.sprite_lists["start"]
@@ -62,11 +65,10 @@ class MenuScreen(arcade.Window):
         self.manager.clear()
         self.manager.add(self.anchor_layout2)
 
-        # TODO(@iamlostshe): Доработать кнопки
-        # print - просто заглушка
         setup_menu_widgets(
-            (textures.number.one, lambda _: change_screen("grid", 1)),
-            (textures.number.two, lambda _: change_screen("grid", 2)),
-            (textures.number.three, lambda _: change_screen("grid", 3)),
+            *(
+                (i, lambda _, n=n: change_screen("grid", n))
+                for n, i in enumerate(_BUTTONS)
+            ),
             box_layout=self.box_layout2,
         )

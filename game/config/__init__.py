@@ -24,9 +24,9 @@ KEYS = (
 
 # Список уровней
 LEVELS_LIST = (
+    tilemaps.START,
     tilemaps.FIRST_LEVEL,
-    tilemaps.SECOND_LEVEL,
-    tilemaps.THIRD_LEVEL,
+    tilemaps.END,
 )
 
 __all__ = (
