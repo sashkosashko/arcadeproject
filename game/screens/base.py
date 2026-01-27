@@ -1,6 +1,8 @@
 from pathlib import Path
 
 import arcade
+import random
+from arcade.particles import FadeParticle, Emitter, EmitMaintainCount
 from arcade.gui import UIManager
 from arcade.gui.widgets.layout import UIAnchorLayout, UIBoxLayout
 
@@ -43,6 +45,19 @@ class BaseScreen(arcade.Window):
         self.player.position = spawn_position
         self.player_list.append(self.player)
 
+        # Частицы для следа
+        self.emitters = []
+        self.SPARK_TEX = [
+            arcade.make_soft_circle_texture(16, arcade.color.PASTEL_YELLOW),
+            arcade.make_soft_circle_texture(16, arcade.color.PEACH),
+            arcade.make_soft_circle_texture(16, arcade.color.BABY_BLUE),
+            arcade.make_soft_circle_texture(16, arcade.color.ELECTRIC_CRIMSON),
+        ]
+
+        # Создаем след для игрока
+        self.trail = self.make_trail(self.player)
+        self.emitters.append(self.trail)
+
         # Меню
         self.box_layout = UIBoxLayout(vertical=True, space_between=10)
         self.anchor_layout = UIAnchorLayout()
@@ -73,6 +88,22 @@ class BaseScreen(arcade.Window):
 
         # Отображение диалогов
         self.show_dialogs()
+
+    def make_trail(self, attached_sprite, maintain=30):
+        """Создает эмиттер для следа за игроком."""
+        emit = Emitter(
+            center_xy=(attached_sprite.center_x, attached_sprite.center_y),
+            emit_controller=EmitMaintainCount(maintain),
+            particle_factory=lambda e: FadeParticle(
+                filename_or_texture=random.choice(self.SPARK_TEX),
+                change_xy=arcade.math.rand_in_circle((0.0, 0.0), 1.6),
+                lifetime=random.uniform(0.3, 0.5),
+                start_alpha=220,
+                end_alpha=0,
+                scale=random.uniform(0.2, 0.35),
+            ),
+        )
+        return emit
 
     def show_dialogs(self) -> None:
         """Показ диалогов."""
@@ -110,16 +141,20 @@ class BaseScreen(arcade.Window):
             if i is not None:
                 i.draw()
 
+        # Отрисовка частиц
+        for e in self.emitters:
+            e.draw()
+
     def play(self) -> None:
         self.box_layout = UIBoxLayout(vertical=True, space_between=10)
 
         self.player.can_go = True
         self.is_menu_widgets_open = False
 
-    def on_update(self, _: float) -> None:
-        """Действия при обновлении ."""
+    def on_update(self, delta_time: float) -> None:
+        """Действия при обновлении."""
         self.player.change_x, self.player.change_y = self.change_x, self.change_y
-        self.update_animation()
+        self.update_animation(delta_time)
 
         dead_zone_w = int(self.width * 0.1)
         dead_zone_h = int(self.height * 0.1)
@@ -151,6 +186,14 @@ class BaseScreen(arcade.Window):
         smooth_x = (1 - config.CAMERA_LERP) * cam_x + config.CAMERA_LERP * target_x
         smooth_y = (1 - config.CAMERA_LERP) * cam_y + config.CAMERA_LERP * target_y
 
+        # Обновление позиции частиц следа за игроком
+        self.trail.center_x = self.player.center_x
+        self.trail.center_y = self.player.center_y
+
+        # Обновление частиц
+        for e in self.emitters:
+            e.update(delta_time)
+
         self.world_camera.position = (smooth_x, smooth_y)
         self.physics_engine.update()
 
@@ -159,7 +202,6 @@ class BaseScreen(arcade.Window):
     def on_key_press(self, key: int, _: int) -> None:
         """Обработка нажатия кнопок клавиатуры."""
         self.keys_pressed.append(key)
-
         if key == arcade.key.ESCAPE:
             if self.player.can_go:
                 setup_menu_widgets(
