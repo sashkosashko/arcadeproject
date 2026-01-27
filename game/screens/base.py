@@ -1,22 +1,27 @@
+from pathlib import Path
+
 import arcade
 from arcade.gui import UIManager
 from arcade.gui.widgets.layout import UIAnchorLayout, UIBoxLayout
 
 from game import config
+from game.change_screen import change_screen
 from game.components import Dialog, setup_menu_widgets
-from game.config import sounds, textures
-from game.screens import change_screen
+from game.config import textures
 from game.types import Player
 
 
-class GridScreen(arcade.Window):
+class BaseScreen(arcade.Window):
     """Класс игры."""
 
-    def __init__(self, level: int) -> None:
+    def __init__(
+        self,
+        spawn_position: tuple[float, float],
+        tile_map: Path,
+    ) -> None:
         """Инициализация класса игры."""
         # Параметры, передаваемые в __init__
         super().__init__(config.WIDTH, config.HEIGHT, config.TITLE)
-        self.level = level
 
         # Инициализация переменных
         self.dialog: Dialog | None = None
@@ -35,7 +40,7 @@ class GridScreen(arcade.Window):
 
         self.player_texture = textures.MOVES_SPRITES_IDLE_PLAYER
         self.player = Player(self.player_texture, 2, config.SPEED)
-        self.player.position = (self.width // 1.25, self.height // 3.5)
+        self.player.position = spawn_position
         self.player_list.append(self.player)
 
         # Меню
@@ -48,7 +53,7 @@ class GridScreen(arcade.Window):
 
         # Загрузка карты и мира
         self.tile_map = arcade.load_tilemap(
-            config.LEVELS_LIST[self.level],
+            tile_map,
             scaling=config.TILE_SCALING,
         )
         self.floor_list, self.collision_list = (
@@ -71,29 +76,9 @@ class GridScreen(arcade.Window):
 
     def show_dialogs(self) -> None:
         """Показ диалогов."""
-        if self.level == 0:
-            self.dialog = Dialog(
-                "???",
-                "Ахх.. Где я?. Голова раскалывается.. Как я тут оказалась?.",
-                sounds.BEGINNING,
-                pos=1,
-            )
 
-        if self.level == 1:
-            self.dialog = Dialog(
-                "Лиза",
-                "Ура!..",
-                sounds.HOORAY,
-                pos=1,
-            )
-
-        if self.level == 2:
-            self.dialog = Dialog(
-                "Лиза",
-                "Фух... Мы справились!..",
-                sounds.PHEW_WE_DID_IT,
-                pos=1,
-            )
+    def check_change_level(self) -> None:
+        """Проверка события переключения между уровнями."""
 
     def update_animation(self, delta_time: float = 1 / 60) -> None:
         """Обновление анимации."""
@@ -170,20 +155,6 @@ class GridScreen(arcade.Window):
         self.physics_engine.update()
 
         self.check_change_level()
-
-    def check_change_level(self) -> None:
-        """Проверка события переключения между уровнями."""
-        if (
-            self.level == 0
-            and self.player.center_x > 2506
-            and self.player.center_y < 2576
-        ):
-            change_screen("grid", 1)
-            return
-
-        if self.level == 1 and self.player.center_x > 1436 and self.player.center_x < 1816 and self.player.center_y > 3002 and self.player.center_y < 3292:
-            change_screen("grid", 2)
-            return
 
     def on_key_press(self, key: int, _: int) -> None:
         """Обработка нажатия кнопок клавиатуры."""

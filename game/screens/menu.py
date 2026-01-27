@@ -3,9 +3,9 @@ from arcade.gui import UIManager
 from arcade.gui.widgets.layout import UIAnchorLayout, UIBoxLayout
 
 from game import config
+from game.change_screen import change_screen
 from game.components.menu_widgets import setup_menu_widgets
 from game.config import textures, tilemaps
-from game.screens import change_screen
 
 _BUTTONS = (
     textures.number.one,
@@ -60,7 +60,7 @@ class MenuScreen(arcade.Window):
 
         setup_menu_widgets(
             *(
-                (i, lambda _, n=n: change_screen("grid", n))
+                (i, lambda _, n=n: change_screen(str(n)))
                 for n, i in enumerate(_BUTTONS)
             ),
             box_layout=self.box_layout2,
