@@ -38,11 +38,10 @@ class BaseScreen(arcade.Window):
         self.world_camera = self.gui_camera = arcade.camera.Camera2D()
 
         # Инициализация игрока
-        self.player_list: arcade.SpriteList = arcade.SpriteList()
-
         self.player_texture = textures.MOVES_SPRITES_IDLE_PLAYER
-        self.player = Player(self.player_texture, 2, config.SPEED)
-        self.player.position = spawn_position
+        self.player = Player(self.player_texture, 2, config.SPEED, spawn_position)
+
+        self.player_list: arcade.SpriteList = arcade.SpriteList()
         self.player_list.append(self.player)
 
         # Частицы для следа
@@ -116,7 +115,7 @@ class BaseScreen(arcade.Window):
                 if not self.keys_pressed or self.keys_pressed[-1] not in config.KEYS:
                     return
 
-                n = config.KEYS.index(self.keys_pressed[-1])
+                n = config.KEYS.index(self.keys_pressed[-1]) // 3
                 self.player.texture = textures.WALK_TEXTURES[n][
                     self.current_texture - 1
                 ]
@@ -195,6 +194,7 @@ class BaseScreen(arcade.Window):
     def on_key_press(self, key: int, _: int) -> None:
         """Обработка нажатия кнопок клавиатуры."""
         self.keys_pressed.append(key)
+
         if key == arcade.key.ESCAPE:
             if self.player.can_go:
                 setup_menu_widgets(
@@ -217,27 +217,35 @@ class BaseScreen(arcade.Window):
 
         if key in config.KEYS:
             self.is_walking = True
+            n = config.KEYS.index(key) // 3
 
-        match key:
-            case arcade.key.S:
-                self.change_y = -self.player.speed
-            case arcade.key.A:
-                self.change_x = -self.player.speed
-            case arcade.key.W:
-                self.change_y = self.player.speed
-            case arcade.key.D:
-                self.change_x = self.player.speed
+            match n:
+                case 0:
+                    self.change_y = -self.player.speed
+                case 1:
+                    self.change_x = -self.player.speed
+                case 2:
+                    self.change_y = self.player.speed
+                case 3:
+                    self.change_x = self.player.speed
+
+        print(
+            self.player.center_x,
+            self.player.center_y,
+        )
 
     def on_key_release(self, key: int, _: int) -> None:
         """Обработка отпускания кнопок клавиатуры."""
         if key in self.keys_pressed:
             self.keys_pressed.remove(key)
 
-        if key in (arcade.key.A, arcade.key.D):
-            self.change_x = 0
+        if key in config.KEYS:
+            n = config.KEYS.index(key) // 3
+            if n in (1, 3):
+                self.change_x = 0
 
-        elif key in (arcade.key.W, arcade.key.S):
-            self.change_y = 0
+            elif n in (0, 2):
+                self.change_y = 0
 
         if not self.change_x and not self.change_y:
             self.is_walking = False
