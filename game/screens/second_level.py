@@ -6,14 +6,15 @@ import arcade
 
 from game import config
 from game.change_screen import change_screen
+from game.components import Dialog
 from game.config import sounds, textures, tilemaps
 from game.screens import BaseScreen
 
 SPAWN_POS = 5 + 1 * 32 * config.TILE_SCALING, 6 + 1 * 32 * config.TILE_SCALING
 
 
-class FirstLevelScreen(BaseScreen):
-    """Первый уровень."""
+class SecondLevelScreen(BaseScreen):
+    """Второй уровень."""
 
     def __init__(self) -> None:
         """Инициализация класса."""
@@ -26,12 +27,10 @@ class FirstLevelScreen(BaseScreen):
             pos=1,
         )
 
-        self.mines = []
         for i in range(1, 7):
             x = i * 4
             for _ in range(randint(3, 6)):
                 y = randint(2, 11)
-                self.mines.append((x, y))
 
                 self.trial_list.append(
                     arcade.Sprite(
@@ -46,9 +45,3 @@ class FirstLevelScreen(BaseScreen):
         """Проверка события переключения между уровнями."""
         if self.player.center_x > 31 * 32 * config.TILE_SCALING:
             change_screen("2")
-
-        if (
-            self.player.center_x / 32 // config.TILE_SCALING,
-            self.player.center_y / 32 // config.TILE_SCALING,
-        ) in self.mines:
-            change_screen("1")

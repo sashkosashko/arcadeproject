@@ -18,6 +18,8 @@ def change_screen(
         case "1":
             screens.FirstLevelScreen()
         case "2":
+            screens.SecondLevelScreen()
+        case "3":
             screens.EndScreen()
 
     arcade.run()
