@@ -1,5 +1,8 @@
 """Стартовый экран."""
 
+import time
+
+from game import config
 from game.change_screen import change_screen
 from game.components import Dialog
 from game.config import sounds, tilemaps
@@ -15,6 +18,7 @@ class StartScreen(BaseScreen):
         """Инициализация класса."""
         super().__init__(SPAWN_POS, tilemaps.START)
 
+        self.timer = time.time()
         self.dialog = Dialog(
             "???",
             "Ахх.. Где я?. Голова раскалывается.. Как я тут оказалась?.",
@@ -24,5 +28,5 @@ class StartScreen(BaseScreen):
 
     def check_change_level(self) -> None:
         """Проверка события переключения между уровнями."""
-        if self.player.center_x > 2506 and self.player.center_y < 2576:
+        if self.player.center_x > (25 + 1) * 32 * config.TILE_SCALING:
             change_screen("1")

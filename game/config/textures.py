@@ -14,7 +14,8 @@ _NORM_FOLDER = _BUTTONS_FOLDER / "norm"
 _PUSH_FOLDER = _BUTTONS_FOLDER / "push"
 _NUM_FOLDER = _NORM_FOLDER / "numbers"
 
-BLUE_TILE = _TEXTURES_FOLDER / "blutile.png"
+BLUE_MINE = _TEXTURES_FOLDER / "mines" / "blue.png"
+RED_MINE = _TEXTURES_FOLDER / "mines" / "red.png"
 
 _CLICK = load_texture(_CLICK_FOLDER / "click.png")
 _CLICK_LEVELS = load_texture(_CLICK_FOLDER / "click_levels.png")

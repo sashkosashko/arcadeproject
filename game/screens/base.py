@@ -18,7 +18,7 @@ class BaseScreen(arcade.Window):
 
     def __init__(
         self,
-        spawn_position: tuple[float, float],
+        spawn_position: tuple[int],
         tile_map: Path,
     ) -> None:
         """Инициализация класса игры."""
@@ -42,6 +42,7 @@ class BaseScreen(arcade.Window):
         self.player = Player(self.player_texture, 2, config.SPEED, spawn_position)
 
         self.player_list: arcade.SpriteList = arcade.SpriteList()
+        self.trial_list: arcade.SpriteList = arcade.SpriteList()
         self.player_list.append(self.player)
 
         # Частицы для следа
@@ -85,7 +86,7 @@ class BaseScreen(arcade.Window):
             self.collision_list,
         )
 
-    def make_trail(self, attached_sprite, maintain: int = 30):
+    def make_trail(self, attached_sprite: arcade.Sprite, maintain: int = 30) -> Emitter:
         """Создает эмиттер для следа за игроком."""
         return Emitter(
             center_xy=(attached_sprite.center_x, attached_sprite.center_y),
@@ -129,7 +130,13 @@ class BaseScreen(arcade.Window):
         self.world_camera.use()
         self.gui_camera.use()
 
-        for i in (self.floor_list, self.dialog, self.player_list, self.manager):
+        for i in (
+            self.floor_list,
+            self.trial_list,
+            self.dialog,
+            self.player_list,
+            self.manager,
+        ):
             if i is not None:
                 i.draw()
 
@@ -186,7 +193,7 @@ class BaseScreen(arcade.Window):
         for e in self.emitters:
             e.update(delta_time)
 
-        self.world_camera.position = (smooth_x, smooth_y)
+        self.world_camera.position = smooth_x, smooth_y
         self.physics_engine.update()
 
         self.check_change_level()
@@ -230,8 +237,9 @@ class BaseScreen(arcade.Window):
                     self.change_x = self.player.speed
 
         print(
-            self.player.center_x,
-            self.player.center_y,
+            "[DEBUG] [x y]: ",
+            int(self.player.center_x),
+            int(self.player.center_y),
         )
 
     def on_key_release(self, key: int, _: int) -> None:

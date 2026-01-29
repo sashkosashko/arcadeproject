@@ -43,11 +43,11 @@ class Dialog:
         arcade.draw_rect_filled(
             arcade.rect.XYWH(
                 WIDTH // 2,
-                self.pos - HEIGHT * .3,
+                self.pos - HEIGHT * 0.3,
                 WIDTH * 0.85,
-                HEIGHT * .3,
+                HEIGHT * 0.3,
             ),
-            arcade.color.BLACK,
+            (0, 0, 0, int(.85 * 256)),
         )
         if self.texture:
             arcade.draw_texture_rect(
