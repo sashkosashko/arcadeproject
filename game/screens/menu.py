@@ -11,6 +11,7 @@ _BUTTONS = (
     textures.number.one,
     textures.number.two,
     textures.number.three,
+    textures.number.four,
 )
 
 

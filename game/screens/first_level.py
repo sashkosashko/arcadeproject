@@ -6,6 +6,7 @@ import arcade
 
 from game import config
 from game.change_screen import change_screen
+from game.components import Dialog
 from game.config import sounds, textures, tilemaps
 from game.screens import BaseScreen
 
