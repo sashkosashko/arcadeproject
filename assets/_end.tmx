@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <map version="1.10" tiledversion="1.11.2" orientation="orthogonal" renderorder="right-down" width="24" height="12" tilewidth="32" tileheight="32" infinite="0" nextlayerid="3" nextobjectid="1">
- <tileset firstgid="1" source="final_scene_tiles1.tsx"/>
+ <tileset firstgid="1" source="hospital.tsx"/>
  <layer id="2" name="collision" width="24" height="12" visible="0" locked="1">
   <data encoding="base64" compression="zlib">
    eJxTY2BgUKMxZqQRHm7mwwAynxg5bGpxuR8dUCIHM58W4BcDwu1D0Xw+JPN5aWg+reIAOX55aYBhZgMAjAIKOw==

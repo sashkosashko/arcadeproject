@@ -22,18 +22,10 @@ KEYS = (
     arcade.key.D, arcade.key.RIGHT, 171798691840,
 )
 
-# Список уровней
-LEVELS_LIST = (
-    tilemaps.START,
-    tilemaps.FIRST_LEVEL,
-    tilemaps.END,
-)
-
 __all__ = (
     "CAMERA_LERP",
     "HEIGHT",
     "KEYS",
-    "LEVELS_LIST",
     "SPEED",
     "TILE_SCALING",
     "TITLE",

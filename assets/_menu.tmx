@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <map version="1.10" tiledversion="1.11.2" orientation="orthogonal" renderorder="right-down" width="30" height="20" tilewidth="32" tileheight="32" infinite="0" nextlayerid="2" nextobjectid="1">
- <tileset firstgid="1" source="my_textures1.tsx"/>
+ <tileset firstgid="1" source="sand.tsx"/>
  <layer id="1" name="start" width="30" height="20">
   <data encoding="base64" compression="zlib">
    eJzNlTEOgDAIRasO1qE6tPc/q5h0IA1tQYE4vGBi9IF8dQkhrM5swA4UIDtyVO9zHAfMznPIqLZeqjd8TRESUZ15ez2+nZPrpea09o52YuXt4fWctfMs8baZ9HiPNO4v/W7geb/6R31ZePFuehm19kr3q+ml6l+9Wv8B7n61csvJsxelehNwOnMBN3s9G50=
