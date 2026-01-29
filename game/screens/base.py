@@ -28,7 +28,7 @@ class BaseScreen(arcade.Window):
         # Инициализация переменных
         self.dialog: Dialog | None = None
         self.is_menu_widgets_open = self.is_walking = False
-        self.change_x = self.change_y = self.current_texture = 0
+        self.change_x = self.change_y = self.current_texture = self.timer = 0
         self.texture_change_time = 0.0
         self.texture_change_delay = 0.1  # секунд на кадр
         self.keys_pressed: list[int] = []
@@ -145,7 +145,7 @@ class BaseScreen(arcade.Window):
             e.draw()
 
     def play(self) -> None:
-        self.box_layout = UIBoxLayout(vertical=True, space_between=10)
+        self.box_layout.clear()
 
         self.player.can_go = True
         self.is_menu_widgets_open = False
