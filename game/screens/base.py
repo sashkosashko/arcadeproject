@@ -28,7 +28,7 @@ class BaseScreen(arcade.Window):
         # Инициализация переменных
         self.dialog: Dialog | None = None
         self.is_menu_widgets_open = self.is_walking = False
-        self.change_x = self.change_y = self.current_texture = self.timer = 0
+        self.change_x = self.change_y = self.current_texture = 0
         self.texture_change_time = 0.0
         self.texture_change_delay = 0.1  # секунд на кадр
         self.keys_pressed: list[int] = []
@@ -235,12 +235,6 @@ class BaseScreen(arcade.Window):
                     self.change_y = self.player.speed
                 case 3:
                     self.change_x = self.player.speed
-
-        print(
-            "[DEBUG] [x y]: ",
-            int(self.player.center_x),
-            int(self.player.center_y),
-        )
 
     def on_key_release(self, key: int, _: int) -> None:
         """Обработка отпускания кнопок клавиатуры."""

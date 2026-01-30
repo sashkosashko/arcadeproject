@@ -1,14 +1,13 @@
 """Стартовый экран."""
 
-import time
-
 from game import config
 from game.change_screen import change_screen
 from game.components import Dialog
 from game.config import sounds, tilemaps
 from game.screens import BaseScreen
+from game.utils.manage_time import save_time
 
-SPAWN_POS = (150, 220)
+SPAWN_POS = 150, 220
 
 
 class StartScreen(BaseScreen):
@@ -18,7 +17,8 @@ class StartScreen(BaseScreen):
         """Инициализация класса."""
         super().__init__(SPAWN_POS, tilemaps.START)
 
-        self.timer = time.time()
+        save_time()
+
         self.dialog = Dialog(
             "???",
             "Ахх.. Где я?. Голова раскалывается.. Как я тут оказалась?.",
