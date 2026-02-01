@@ -1,16 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.10" tiledversion="1.11.2" orientation="orthogonal" renderorder="right-down" width="32" height="16" tilewidth="32" tileheight="32" infinite="0" nextlayerid="3" nextobjectid="1">
- <tileset firstgid="1" source="road.tsx"/>
- <tileset firstgid="13483" source="pits.tsx"/>
- <tileset firstgid="13588" source="default.tsx"/>
- <layer id="2" name="collision" width="32" height="16">
+<map version="1.10" tiledversion="1.11.2" orientation="orthogonal" renderorder="right-down" width="32" height="10" tilewidth="32" tileheight="32" infinite="0" nextlayerid="3" nextobjectid="1">
+ <tileset firstgid="1" source="default.tsx"/>
+ <tileset firstgid="301" source="sand.tsx"/>
+ <layer id="2" name="collision" width="32" height="10">
   <data encoding="base64" compression="zlib">
-   eJxjYBgFo2AUjIJRMBAg15T+GN1+evt31H5U/kDGPwDhvSiB
+   eJxzYGRgcBhgPFBg1P6BtR/mhpFq/0CH/2CxfyAxANGpE88=
   </data>
  </layer>
- <layer id="1" name="floor" width="32" height="16">
+ <layer id="1" name="floor" width="32" height="10" locked="1">
   <data encoding="base64" compression="zlib">
-   eJy91VlvUEUYBuC56YKCqCwNKrRFo0CrqLQ1eNM7ZQkqolEIYAF/gCwiREFwA8q+qIhtOdACKoi0FNrKVhYRUPAHCBXENXFBlIB3PnDmsiVAai+evGdmMvOdOZnMySkOoaUohJzikMRsjlkWs13HC2O7NLZraSoKZU3x+VrdyJy25JaE5LL/e85V9tLMda11I3NasyYjhA+poJIq1pKwjvVUU8MGNrKJj/iYT9jMFj5lK5+xjVrq2E49O9hJA42xbkZmCANKQlmWzKYTN3EznenCLXTlVm7jdrrRnR70JCddp7mXvIM7KdDuLfuQSx759KW0JIRM+RKTmcJUpvEy03mFGcxM1wqvyteYxWxeZw5zeYM3eYu3eYd5zGcB5SxkEYtZEut+y0lO0cJ3nOYM33OWH/iRn/iZX/g17oHkN8+/8wd/co6/OM/f/MOFdA/JRXmJf2Pdx7JCeJwhDGUYw7OufMtkhHyCJ3mKkTzNKJ7h2az0HZ6TzzOaMencMFaOYzwvUMYEJjKJF2PdWurYTj072EkDjTTxObvYzR72so9m9nOAgxziCw7zJUc4yjG+4muOc4JvYt27skPoTR9yySOfvtzNPdnpubpX3kc/+qd9SYEs5H4eYCAP8hAPM4giiinhkez0HA2Wj8a685gf+8vlQhaxmCUsZRnLWcFKVvEu7/E+q/mANXGdCllJFWtJWMd6qqlhQ6zbHvdXR9/XHXXHt/P+W72vO+q/29b4f3eOdcA=
+   eJzFlMENgCAQBJeK/JDYDqVRCglF2I6Id2Qh6AfQxwQl5EaWwwj4A0AifD1GwCW8Nc/sBhgh1QhS63p28p558Zc1E/2hhfyh57aDbvH36mYf+Z2ABX7NXOsrfkuj+Kt5/t6Ffmx3BnzuvH8/8fxbct6d/Lk/Man/eV/VPSA/aE2V0wS/+tRT+l39f/5/Tk97y+s=
   </data>
  </layer>
 </map>

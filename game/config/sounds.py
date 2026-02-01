@@ -17,3 +17,4 @@ BLUE_CROSSES = load_sound(Path("assets") / "sounds" / "сини_крыжочки
 HOORAY = load_sound(Path("assets") / "sounds" / "ура.mp3")
 PHEW_WE_DID_IT = load_sound(Path("assets") / "sounds" / "фух_мы_справились.mp3")
 I_WOULDNT_GO_THERE = load_sound(Path("assets") / "sounds" / "я_бы_туда_не_ходила.mp3")
+CORRECT1 = load_sound(Path("assets") / "sounds" / "правильный кружочек.mp3")
