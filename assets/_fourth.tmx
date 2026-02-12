@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.10" tiledversion="1.11.2" orientation="orthogonal" renderorder="right-down" width="26" height="20" tilewidth="32" tileheight="32" infinite="0" nextlayerid="3" nextobjectid="1">
+ <tileset firstgid="1" source="default.tsx"/>
+ <tileset firstgid="301" source="road.tsx"/>
+ <layer id="2" name="collision" width="26" height="20">
+  <data encoding="base64" compression="zlib">
+   eJyLZmBgiKYTpgcYCHuGeriN2jNqz6g9o/YMlD20LjNHw418DACKNy3c
+  </data>
+ </layer>
+ <layer id="1" name="floor" width="26" height="20">
+  <data encoding="base64" compression="zlib">
+   eJzt1TFKA0EUxvGvV5ONRmFbJVh4AwuvIBb2U1h4BbGIuYBIXK2/RjQ3ELHYG1h4BbHwBhaC/8FRllXELK5YpPgxb2Z2eW+mmJdLyqUyfxtdictK/JNv4nqo7X3MJ4zRFS5biqOzpMBpS3E0So7SuMoZ23A9p7A2r3CMZ+wtKNxhs6NwgayrcIhH7GQKt1jvKYyndNKTB7jJ5G08dOUDdJKm+/X1vzpPzDONpjXN7m12b9H5iryBclnexVNfHqKPyZK8hftFeR8v1Mc/Jo/JZ/Ka/KYOU4+py9Rn6jT1mrpN/eYcje/lv95bW+9mUXmviy/e77Z6xHtPGCbV+W/Gqbd+6rPJd3vVfl2f17/VK7XJ+h0=
+  </data>
+ </layer>
+</map>

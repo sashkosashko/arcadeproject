@@ -14,12 +14,14 @@ def change_screen(
         case "menu":
             screens.MenuScreen()
         case "0":
-            screens.StartScreen()
-        case "1":
             screens.FirstLevelScreen()
-        case "2":
+        case "1":
             screens.SecondLevelScreen()
+        case "2":
+            screens.ThirdLevelScreen()
         case "3":
-            screens.EndScreen()
+            screens.FourthLevelScreen()
+        case "4":
+            screens.FifthLevelScreen()
 
     arcade.run()

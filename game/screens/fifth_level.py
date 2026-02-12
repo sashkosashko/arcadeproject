@@ -11,12 +11,12 @@ from game.utils.manage_time import get_status
 SPAWN_POS = (380, 330)
 
 
-class EndScreen(BaseScreen):
+class FifthLevelScreen(BaseScreen):
     """Окончательный экран."""
 
     def __init__(self) -> None:
         """Инициализация класса."""
-        super().__init__(SPAWN_POS, tilemaps.END)
+        super().__init__(SPAWN_POS, tilemaps.FIFTH)
 
         self.dialog = Dialog(
             "Лиза",
