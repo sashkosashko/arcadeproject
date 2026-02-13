@@ -16,9 +16,9 @@ def change_screen(
         case "0":
             screens.StartScreen()
         case "1":
-            screens.FirstLevelScreen()
+            screens.MotorSkillsLevelScreen()
         case "2":
-            screens.SecondLevelScreen()
+            screens.PatienceLevelScreen()
         case "3":
             screens.EndScreen()
 

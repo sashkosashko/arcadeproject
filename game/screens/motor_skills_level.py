@@ -13,7 +13,7 @@ from game.screens import BaseScreen
 SPAWN_POS = 5 + 1 * 32 * config.TILE_SCALING, 6 + 1 * 32 * config.TILE_SCALING
 
 
-class FirstLevelScreen(BaseScreen):
+class MotorSkillsLevelScreen(BaseScreen):
     """Первый уровень."""
 
     def __init__(self) -> None:

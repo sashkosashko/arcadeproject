@@ -1,4 +1,4 @@
-"""Первый уровень."""
+"""Уровень на развитие терпения."""
 
 import arcade
 
@@ -20,8 +20,8 @@ _MINED = (
 )
 
 
-class SecondLevelScreen(BaseScreen):
-    """Второй уровень."""
+class PatienceLevelScreen(BaseScreen):
+    """Уровень на развитие терпения."""
 
     def __init__(self) -> None:
         """Инициализация класса."""
