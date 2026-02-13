@@ -55,4 +55,4 @@ class PatienceLevelScreen(BaseScreen):
             self.player.center_x / 32 // config.TILE_SCALING,
             self.player.center_y / 32 // config.TILE_SCALING,
         ) in self.mines and self.player.speed > 3:
-            self.player.speed *= .96
+            self.player.speed *= 0.96

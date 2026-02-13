@@ -42,7 +42,11 @@ class Player(arcade.Sprite):
     can_go = True
 
     def __init__(
-        self, texture: Texture, scale: int, speed: int, spawn_position: tuple[int],
+        self,
+        texture: Texture,
+        scale: int,
+        speed: int,
+        spawn_position: tuple[int],
     ) -> None:
         """Инициализация игрока."""
         super().__init__(texture, scale, spawn_position[0], spawn_position[1])

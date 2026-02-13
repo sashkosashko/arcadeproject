@@ -20,6 +20,8 @@ def change_screen(
         case "2":
             screens.PatienceLevelScreen()
         case "3":
+            screens.SchoolLevelScreen()
+        case "4":
             screens.EndScreen()
 
     arcade.run()

@@ -7,6 +7,7 @@ from game.utils import api
 
 TIME_DUMP_FILE = Path("time.txt")
 
+
 def save_time() -> None:
     """Сохраняем время начала игры."""
     with TIME_DUMP_FILE.open("w") as f:

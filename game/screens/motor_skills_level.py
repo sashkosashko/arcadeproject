@@ -1,4 +1,4 @@
-"""Первый уровень."""
+"""Уровень на развитие моторики."""
 
 from random import randint
 
@@ -14,7 +14,7 @@ SPAWN_POS = 5 + 1 * 32 * config.TILE_SCALING, 6 + 1 * 32 * config.TILE_SCALING
 
 
 class MotorSkillsLevelScreen(BaseScreen):
-    """Первый уровень."""
+    """Уровень на развитие моторики."""
 
     def __init__(self) -> None:
         """Инициализация класса."""

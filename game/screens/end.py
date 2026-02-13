@@ -1,6 +1,5 @@
 """Конечная заставка."""
 
-
 import arcade
 
 from game.components import Dialog
@@ -31,6 +30,6 @@ class EndScreen(BaseScreen):
             width=300,
             height=200,
             message_text=result,
-            buttons=("Ура!", ),
+            buttons=("Ура!",),
         )
         self.manager.add(message_box)

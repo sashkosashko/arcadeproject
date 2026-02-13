@@ -16,10 +16,18 @@ CAMERA_LERP = 0.15
 
 # Клавиши управления
 KEYS = (
-    arcade.key.S, arcade.key.DOWN, 167503724544,
-    arcade.key.A, arcade.key.LEFT, 163208757248,
-    arcade.key.W, arcade.key.UP, 107374182400,
-    arcade.key.D, arcade.key.RIGHT, 171798691840,
+    arcade.key.S,
+    arcade.key.DOWN,
+    167503724544,
+    arcade.key.A,
+    arcade.key.LEFT,
+    163208757248,
+    arcade.key.W,
+    arcade.key.UP,
+    107374182400,
+    arcade.key.D,
+    arcade.key.RIGHT,
+    171798691840,
 )
 
 __all__ = (
