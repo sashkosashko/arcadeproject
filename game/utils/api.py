@@ -1,13 +1,14 @@
 """Работа с API.
 
-Документация: https://lb.iamlostshe.ru/redoc
+Документация: http://lb.iamlostshe.ru:8000/redoc
 """
 
 from requests import Session
 
-_BASE_URL = "https://lb.iamlostshe.ru/"
+_BASE_URL = "http://lb.iamlostshe.ru:8000/"
 
 session = Session()
+
 
 def pin_res(res_time: int) -> None:
     session.get(
