@@ -29,19 +29,21 @@ class SecondLevelScreen(BaseScreen):
 
         self.mines = []
         for i in range(1, 7):
-            x = i * 4
-            for _ in range(randint(3, 6)):
-                y = randint(2, 11)
-                self.mines.append((x, y))
+            y = 1
+            for _ in range(5):
+                y += 2
+                for _ in range(2):
+                    x = randint(1, 3) + 4 * (i - 1)
+                    self.mines.append((x, y))
 
-                self.trial_list.append(
-                    arcade.Sprite(
-                        arcade.load_texture(textures.BLUE_MINE),
-                        config.TILE_SCALING,
-                        x * 32 * config.TILE_SCALING + 16 * config.TILE_SCALING,
-                        y * 32 * config.TILE_SCALING + 16 * config.TILE_SCALING,
-                    ),
-                )
+                    self.trial_list.append(
+                        arcade.Sprite(
+                            arcade.load_texture(textures.BLUE_MINE),
+                            config.TILE_SCALING,
+                            x * 32 * config.TILE_SCALING + 16 * config.TILE_SCALING,
+                            y * 32 * config.TILE_SCALING + 16 * config.TILE_SCALING,
+                        ),
+                    )
 
     def check_change_level(self) -> None:
         """Проверка события переключения между уровнями."""

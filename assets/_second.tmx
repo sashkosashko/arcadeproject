@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.10" tiledversion="1.11.2" orientation="orthogonal" renderorder="right-down" width="32" height="14" tilewidth="32" tileheight="32" infinite="0" nextlayerid="3" nextobjectid="1">
+<map version="1.10" tiledversion="1.11.2" orientation="orthogonal" renderorder="right-down" width="30" height="14" tilewidth="32" tileheight="32" infinite="0" nextlayerid="3" nextobjectid="1">
  <tileset firstgid="1" source="sand.tsx"/>
- <layer id="2" name="collision" width="32" height="14">
+ <layer id="2" name="collision" width="30" height="14">
   <data encoding="base64" compression="zlib">
-   eJwTYWBgEBlgTAwgpI4c+VH7cetDF6c2fzDYT4r4cLR/oMN/KNlPbflR+we+3gFhAFRaCvE=
+   eJwTYWBgEBkgjA/QQn7UXtrzB9JeetgzmOwdafFLjL3Y9FAiP5LtHQgMAPmOCqE=
   </data>
  </layer>
- <layer id="1" name="floor" width="32" height="14">
+ <layer id="1" name="floor" width="30" height="14">
   <data encoding="base64" compression="zlib">
-   eJwTYWBgEBlgzAjETHgwMwF15MgzI9nPDsQceDAnAXXkyHMSsJ+PgH5K5fHZj66e2vzBYD8IMw+w/fwjOPyHkv0gzERFeXLsp6Y8uv28DJDyAob5cYhTSx5ZzUBjAN4UFJE=
+   eJwTYWBgEBkgzMzAkMAEpNExM1SeEYscufLMSPYC+QkcQBodc0Ll2bHIkSvPicNePgL6KJXHZi+6OmrzB9JeDqQ4pre9/CMonAezvRwQObz5ghR5UuylZjmCbi8wXR8A5XdYOuNlgOR/dEypPLKagcIAunwYJw==
   </data>
  </layer>
 </map>
