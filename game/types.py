@@ -5,6 +5,8 @@ from dataclasses import dataclass
 import arcade
 from arcade.texture import Texture
 
+# TODO(@iamlostshe): Перевести тут всё на Pydantic BaseModel
+# если кто-то останется в живых, разумеется
 
 @dataclass
 class ButtonTexture:
@@ -51,3 +53,17 @@ class Player(arcade.Sprite):
         """Инициализация игрока."""
         super().__init__(texture, scale, spawn_position[0], spawn_position[1])
         self.speed = speed
+
+
+@dataclass
+class Task:
+    """Задача.
+
+    - Текст (условие).
+    - Ответ.
+    - Варианты ответа.
+    """
+
+    text: str
+    answer: str
+    answer_options: list[str]

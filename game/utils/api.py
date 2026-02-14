@@ -5,6 +5,8 @@
 
 from requests import Session
 
+from game.types import Task
+
 _BASE_URL = "http://lb.iamlostshe.ru:8000/"
 
 session = Session()
@@ -23,3 +25,17 @@ def get_leaders() -> list:
         _BASE_URL + "res",
         timeout=5,
     ).json()
+
+
+def task() -> Task:
+    """Задача."""
+    data = session.get(
+        _BASE_URL + "task",
+        timeout=5,
+    ).json()
+
+    return Task(
+        data["text"],
+        data["answer"],
+        data["answer_options"],
+    )
