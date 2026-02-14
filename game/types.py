@@ -10,6 +10,7 @@ from game import config
 # TODO(@iamlostshe): Перевести тут всё на Pydantic BaseModel
 # если кто-то останется в живых, разумеется
 
+
 @dataclass
 class ButtonTexture:
     """Текстура кнопки (виджета)."""

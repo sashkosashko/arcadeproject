@@ -74,4 +74,5 @@ class Dialog:
             arcade.color.WHITE,
             20,
             width=int(WIDTH * 0.35),
+            multiline=True,
         ).draw()
