@@ -7,7 +7,7 @@ from game.config import sounds, tilemaps
 from game.screens import BaseScreen
 from game.utils.manage_time import get_status
 
-SPAWN_POS = (380, 330)
+SPAWN_POS = 3, 3
 
 
 class EndScreen(BaseScreen):

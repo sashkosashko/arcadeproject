@@ -8,7 +8,7 @@ from game.components import Dialog
 from game.config import sounds, textures, tilemaps
 from game.screens import BaseScreen
 
-SPAWN_POS = 5 + 1 * 32 * config.TILE_SCALING, 6 + 1 * 32 * config.TILE_SCALING
+SPAWN_POS = 2, 2
 _MINED = (
     *range(1, 6),
     *range(7, 10),

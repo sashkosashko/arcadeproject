@@ -5,6 +5,8 @@ from dataclasses import dataclass
 import arcade
 from arcade.texture import Texture
 
+from game import config
+
 # TODO(@iamlostshe): Перевести тут всё на Pydantic BaseModel
 # если кто-то останется в живых, разумеется
 
@@ -51,7 +53,12 @@ class Player(arcade.Sprite):
         spawn_position: tuple[int],
     ) -> None:
         """Инициализация игрока."""
-        super().__init__(texture, scale, spawn_position[0], spawn_position[1])
+        x, y = (
+            (spawn_position[0] + 0.5) * 32 * config.TILE_SCALING,
+            (spawn_position[1] + 0.5) * 32 * config.TILE_SCALING,
+        )
+
+        super().__init__(texture, scale, x, y)
         self.speed = speed
 
 

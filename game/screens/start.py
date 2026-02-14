@@ -7,7 +7,7 @@ from game.config import sounds, tilemaps
 from game.screens import BaseScreen
 from game.utils.manage_time import save_time
 
-SPAWN_POS = 150, 220
+SPAWN_POS = 2, 2
 
 
 class StartScreen(BaseScreen):
